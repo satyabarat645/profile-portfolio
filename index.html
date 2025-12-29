@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Satyabrata Behera - Detection Engineering, SIEM & SOAR Architect, Incident Response, CEH." />
+  <meta name="keywords" content="Cybersecurity, Detection Engineering, SIEM, SOAR, Wazuh, Splunk, QRadar, Incident Response" />
+  <meta name="author" content="Satyabrata Behera" />
+  <meta property="og:title" content="Satyabrata Behera" />
+  <meta property="og:description" content="Detection Engineering | SIEM & SOAR Architect | Incident Response | CEH" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="Gemini_Generated_Image_cuol2scuol2scuol%20(1)_cropped_processed_by_imagy.png" />
+  <meta property="og:locale" content="en_IN" />
+  <title>Satyabrata Behera</title>
+  <style>
+    :root {
+      --bg-1: #050813;
+      --bg-2: #151a35;
+      --accent-1: #20f1ff;
+      --accent-2: #ff6b5e;
+      --accent-3: #6b5cff;
+      --text: #eef4ff;
+      --muted: #aebad4;
+      --card: rgba(10, 15, 34, 0.7);
+      --border: rgba(32, 241, 255, 0.28);
+      --shadow: rgba(3, 6, 18, 0.5);
+    }
+
+    .light {
+      --bg-1: #f2f5ff;
+      --bg-2: #dee6ff;
+      --accent-1: #0a5bff;
+      --accent-2: #ff6b5e;
+      --accent-3: #6b5cff;
+      --text: #0b0f1f;
+      --muted: #2c3552;
+      --card: rgba(255, 255, 255, 0.88);
+      --border: rgba(10, 91, 255, 0.2);
+      --shadow: rgba(6, 10, 26, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Space Grotesk", "Sora", "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px circle at 8% 10%, rgba(32, 241, 255, 0.18), transparent 48%),
+        radial-gradient(900px circle at 90% 20%, rgba(255, 107, 94, 0.18), transparent 50%),
+        radial-gradient(700px circle at 25% 90%, rgba(107, 92, 255, 0.16), transparent 55%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before,
+    body::after {
+      content: "";
+      position: fixed;
+      inset: -20%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    body::before {
+      background:
+        radial-gradient(640px circle at 14% 18%, rgba(32, 241, 255, 0.3), transparent 62%),
+        radial-gradient(520px circle at 84% 68%, rgba(255, 107, 94, 0.26), transparent 66%),
+        radial-gradient(420px circle at 72% 20%, rgba(107, 92, 255, 0.18), transparent 60%);
+      opacity: 0.95;
+    }
+
+    body::after {
+      background-image:
+        linear-gradient(120deg, rgba(255, 255, 255, 0.05), transparent 40%),
+        linear-gradient(240deg, rgba(255, 255, 255, 0.04), transparent 45%),
+        radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.02) 0 1px, transparent 1px 6px);
+      background-size: auto, auto, 120px 120px, auto;
+      mix-blend-mode: screen;
+      opacity: 0.45;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(16px);
+      background: rgba(10, 12, 32, 0.7);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--accent-1);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus {
+      color: var(--accent-1);
+    }
+
+    .toggle-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: transform 0.2s ease, border 0.3s ease;
+    }
+
+    .toggle-btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--accent-1);
+    }
+
+    main {
+      position: relative;
+      z-index: 1;
+    }
+
+    section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      align-items: center;
+      gap: 32px;
+    }
+
+    .hero-card {
+      background: linear-gradient(150deg, rgba(12, 18, 40, 0.85), rgba(10, 14, 32, 0.6));
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 40px var(--shadow);
+      border-radius: 24px;
+      padding: 28px;
+      backdrop-filter: blur(18px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(240px circle at 20% 20%, rgba(32, 241, 255, 0.18), transparent 60%);
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+    .profile-photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 28px;
+      border: 2px solid var(--accent-1);
+      object-fit: cover;
+      object-position: center 20%;
+      box-shadow: 0 0 28px rgba(32, 241, 255, 0.45);
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      margin: 16px 0 8px;
+    }
+
+    .tagline {
+      font-size: 1.1rem;
+      color: var(--accent-1);
+      margin-bottom: 16px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      text-decoration: none;
+      font-weight: 600;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn.primary {
+      background: linear-gradient(120deg, var(--accent-1), var(--accent-2));
+      color: #06121f;
+      box-shadow: 0 12px 20px rgba(32, 241, 255, 0.25);
+    }
+
+    .btn.ghost {
+      border-color: var(--border);
+      color: var(--text);
+      background: transparent;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .section-title {
+      font-size: 1.9rem;
+      margin-bottom: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 28px;
+      height: 3px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-3), var(--accent-2));
+    }
+
+    .section-subtitle {
+      color: var(--muted);
+      margin-bottom: 28px;
+      max-width: 720px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: linear-gradient(160deg, rgba(12, 18, 40, 0.8), rgba(9, 13, 30, 0.55));
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 12px 28px var(--shadow);
+      transition: transform 0.2s ease, border 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(145deg, rgba(32, 241, 255, 0.08), transparent 55%),
+        radial-gradient(260px circle at 90% 0%, rgba(255, 107, 94, 0.12), transparent 60%);
+      opacity: 0.9;
+      pointer-events: none;
+    }
+
+    .card h3,
+    .card h4 {
+      margin-top: 0;
+    }
+
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .card-link:hover,
+    .card-link:focus {
+      transform: translateY(-2px);
+      border-color: var(--accent-1);
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: linear-gradient(120deg, rgba(32, 241, 255, 0.14), rgba(255, 107, 94, 0.1));
+      border: 1px solid rgba(32, 241, 255, 0.35);
+      font-size: 0.85rem;
+      color: var(--text);
+    }
+
+    .list {
+      display: grid;
+      gap: 12px;
+      padding-left: 20px;
+      margin: 0;
+    }
+
+    .list li {
+      color: var(--muted);
+    }
+
+    .experience-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .experience-role {
+      border-left: 2px solid rgba(255, 255, 255, 0.12);
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .experience-role::before {
+      content: "";
+      position: absolute;
+      left: -7px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-1);
+      box-shadow: 0 0 10px rgba(0, 212, 255, 0.7);
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      text-align: center;
+      padding: 36px 24px;
+      color: var(--muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    @media (max-width: 900px) {
+      .nav {
+        flex-direction: column;
+      }
+
+      .hero {
+        text-align: center;
+      }
+
+      .hero-card {
+        align-items: center;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav" aria-label="Main navigation">
+      <div class="brand">Security Expeert</div>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#focus">Focus</a>
+        <a href="#profile">Profile</a>
+        <a href="#about">About</a>
+        <a href="#education">Education</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#certifications">Certifications</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <button class="toggle-btn" id="themeToggle" aria-label="Toggle dark mode">Toggle theme</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <div class="hero-card fade-in">
+        <img class="profile-photo" src="Gemini_Generated_Image_cuol2scuol2scuol%20(1)_cropped_processed_by_imagy.png" alt="Satyabrata Behera" />
+        <h1>Satyabrata Behera</h1>
+        <div class="tagline">Certifed Ethical Hacker | Detection Engineering | SIEM &amp; SOAR Architect | Incident Response</div>
+        <p>I design detection-driven security operations that scale, automate, and respond faster than attackers.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="resume/SATYABRATA%20BEHERA_Cyber%20Security_2024.docx" download>📄 Download Resume</a>
+          <a class="btn primary" href="https://www.linkedin.com/in/satyabratabehera645/" target="_blank" rel="noopener">🔗 LinkedIn</a>
+          <a class="btn primary" href="https://github.com/" target="_blank" rel="noopener">💻 GitHub</a>
+          <a class="btn primary" href="#contact">✉️ Contact</a>
+        </div>
+      </div>
+      <div class="fade-in">
+        <h2 class="section-title">Security Operations with Precision &amp; Purpose</h2>
+        <p class="section-subtitle">
+          I build resilient SOC ecosystems—from log ingestion to automated response—focused on early threat detection,
+          rapid containment, and measurable risk reduction.
+        </p>
+        <div class="card">
+          <h3>What I Do Best</h3>
+          <ul class="list">
+            <li>Detection engineering mapped to MITRE ATT&amp;CK</li>
+            <li>SIEM &amp; SOAR deployment at scale (500+ endpoints)</li>
+            <li>Incident response automation (phishing, brute-force, malware)</li>
+            <li>Threat intelligence–driven alert enrichment</li>
+            <li>SIEM performance tuning &amp; SOC optimization</li>
+          </ul>
+        </div>
+        <div class="card" style="margin-top: 20px;">
+          <h3>Current Tooling</h3>
+          <div class="pill-list">
+            <span class="pill">Wazuh</span>
+            <span class="pill">Graylog</span>
+            <span class="pill">Grafana</span>
+            <span class="pill">Splunk</span>
+            <span class="pill">IBM QRadar</span>
+            <span class="pill">SOAR</span>
+            <span class="pill">EDR</span>
+            <span class="pill">Burp Suite</span>
+            <span class="pill">Nessus</span>
+            <span class="pill">Docker</span>
+            <span class="pill">Linux</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="focus" class="fade-in">
+      <h2 class="section-title">Focus Areas</h2>
+      <p class="section-subtitle">Specialized capabilities that power my detection-first approach.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>🛡️ Detection Engineering</h3>
+          <p>Rules, correlations, Sigma-style logic, and ATT&amp;CK mapping.</p>
+        </div>
+        <div class="card">
+          <h3>⚙️ SIEM &amp; SOAR</h3>
+          <p>Wazuh-centric SOC pipelines with automation and enrichment.</p>
+        </div>
+        <div class="card">
+          <h3>🚨 Incident Response</h3>
+          <p>Phishing, brute force, malware, and insider activity response.</p>
+        </div>
+        <div class="card">
+          <h3>🔍 Threat Hunting</h3>
+          <p>Log-driven hypotheses across endpoints and network telemetry.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="profile" class="fade-in">
+      <h2 class="section-title">Profile Snapshot</h2>
+      <p class="section-subtitle">
+        CEH-certified cybersecurity professional specializing in SIEM engineering, detection logic, and SOC automation.
+      </p>
+      <div class="grid">
+        <div class="card">
+          <p>
+            I operate at the intersection of logs, threats, and response, translating raw telemetry into actionable security outcomes.
+          </p>
+        </div>
+        <div class="card">
+          <h3>🎯 Open to Roles</h3>
+          <ul class="list">
+            <li>SOC Analyst (Tier 2 / Tier 3)</li>
+            <li>Cyber Threat Analyst</li>
+            <li>Security Engineer</li>
+            <li>Detection Engineer</li>
+            <li>Security Consultant</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="fade-in">
+      <h2 class="section-title">About Me</h2>
+      <p class="section-subtitle">Engineering-first security operations designed to scale.</p>
+      <div class="card">
+        <p>
+          I am a cybersecurity professional with hands-on experience designing and operating SIEM + SOAR platforms in production environments.
+          Currently, I lead Wazuh-based SOC implementations, where I:
+        </p>
+        <ul class="list">
+          <li>Tune detection rules aligned to MITRE ATT&amp;CK</li>
+          <li>Integrate multi-source telemetry (endpoint, network, auth, apps)</li>
+          <li>Automate response workflows for phishing, brute-force, and malware</li>
+          <li>Enrich alerts using threat intelligence feeds</li>
+          <li>Optimize SIEM performance for 500+ agents without alert fatigue</li>
+        </ul>
+        <p>My approach is engineering-first: detections must be explainable, actionable, and scalable.</p>
+      </div>
+    </section>
+
+    <section id="education" class="fade-in">
+      <h2 class="section-title">Education</h2>
+      <div class="card">
+        <h3>MCA – Information Security Management Systems</h3>
+        <p>Jain University (2021–2023)</p>
+      </div>
+    </section>
+
+    <section id="experience" class="fade-in">
+      <h2 class="section-title">Experience</h2>
+      <p class="section-subtitle">Impact-oriented roles focused on detection, response, and automation.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Alyssum Global Services (AG) — Noida</h3>
+          <p>📅 Sep 2024 – Present</p>
+          <p>Progressed from Security Analyst (Intern) → Security Consultant → Security Engineer.</p>
+          <ul class="list">
+            <li>Designed and deployed Wazuh SIEM + SOAR architecture</li>
+            <li>Built detection rules mapped to MITRE ATT&amp;CK</li>
+            <li>Automated incident workflows (phishing, malware, brute-force)</li>
+            <li>Integrated threat intelligence for contextual alerting</li>
+            <li>Scaled monitoring for 500+ endpoints with optimized indexing</li>
+            <li>SIEM tuning, log normalization, and SOC process improvement</li>
+            <li>Incident investigation, response support, and alert reduction</li>
+            <li>Log analysis, alert triage, and security monitoring support</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Penetration Testing Trainee</h3>
+          <p>Forensic Academy — Remote</p>
+          <p>📅 May 2024 – Jun 2024</p>
+          <ul class="list">
+            <li>Web application VAPT</li>
+            <li>OWASP Top 10 testing</li>
+            <li>Reporting and remediation guidance</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Cyber Security Intern</h3>
+          <p>Rubixe — On-site</p>
+          <p>📅 Jun 2023 – Dec 2023</p>
+          <ul class="list">
+            <li>Network traffic analysis</li>
+            <li>Firewall deployment</li>
+            <li>Log monitoring</li>
+            <li>Web application testing</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="fade-in">
+      <h2 class="section-title">Skills</h2>
+      <p class="section-subtitle">Grouped for ATS alignment and human readability.</p>
+      <div class="grid">
+        <div class="card">
+          <h3>Detection &amp; Response</h3>
+          <div class="pill-list">
+            <span class="pill">Threat Detection</span>
+            <span class="pill">Incident Response</span>
+            <span class="pill">Alert Triage</span>
+            <span class="pill">Security Monitoring</span>
+            <span class="pill">MDR Operations</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>SIEM / SOAR</h3>
+          <div class="pill-list">
+            <span class="pill">Wazuh</span>
+            <span class="pill">Splunk</span>
+            <span class="pill">IBM QRadar</span>
+            <span class="pill">SOAR Automation</span>
+            <span class="pill">Log Analysis</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Offensive &amp; Assessment</h3>
+          <div class="pill-list">
+            <span class="pill">Vulnerability Management</span>
+            <span class="pill">Burp Suite</span>
+            <span class="pill">Nessus</span>
+            <span class="pill">Web VAPT</span>
+            <span class="pill">Malware Analysis</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Platforms &amp; Tools</h3>
+          <div class="pill-list">
+            <span class="pill">Linux</span>
+            <span class="pill">Kali Linux</span>
+            <span class="pill">Docker</span>
+            <span class="pill">Wireshark</span>
+            <span class="pill">Python</span>
+            <span class="pill">Bash</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Frameworks</h3>
+          <div class="pill-list">
+            <span class="pill">MITRE ATT&amp;CK</span>
+            <span class="pill">Cyber Kill Chain</span>
+            <span class="pill">OWASP</span>
+            <span class="pill">Incident Response Lifecycle</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="certifications" class="fade-in">
+      <h2 class="section-title">Certifications</h2>
+      <div class="grid">
+        <a class="card card-link" href="https://drive.google.com/file/d/1JheFa9F60itgzJ_iq5P2m47PfLtvH4mY/view?usp=drive_link" target="_blank" rel="noopener">
+          <h3>Certified Ethical Hacker (CEH)</h3>
+          <p>EC-Council</p>
+        </a>
+        <a class="card card-link" href="https://drive.google.com/file/d/1Tyx1XMrcsvLmlOmB5rXMM50tsdKVgYZL/view?usp=drive_link" target="_blank" rel="noopener">
+          <h3>Ethical Hacking</h3>
+          <p>NASSCOM (Nov 2023)</p>
+        </a>
+        <div class="card">
+          <h3>TCS Cybersecurity Analyst Job Simulation</h3>
+          <p>Forage (Feb 2024)</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="achievements" class="fade-in">
+      <h2 class="section-title">Achievements</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>📄 Research Publication</h3>
+          <p>“KYC Verification in Banking System Based on Blockchain” — JETIR, June 2024.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="fade-in">
+      <h2 class="section-title">Projects</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>🚀 SIEM + SOAR Delivery</h3>
+          <p>Scaled Wazuh for 500+ agents with high availability, tuned alerts, and reduced noise.</p>
+        </div>
+        <div class="card">
+          <h3>🔬 Key Projects</h3>
+          <p>Blockchain-based KYC verification system and detection logic for APT tactics using MITRE ATT&amp;CK.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="fade-in">
+      <h2 class="section-title">Contact</h2>
+      <p class="section-subtitle">Open to SOC, Detection Engineering, and Blue Team opportunities.</p>
+      <div class="card">
+        <p>📧 Email: <a href="mailto:satyabratabehera645@gmail.com">satyabratabehera645@gmail.com</a></p>
+        <p>📱 Phone: <a href="tel:+917008004557">+91 7008004557</a></p>
+        <p>📍 Location: Bengaluru, Karnataka, India</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Satyabrata Behera. All rights reserved.</p>
+  </footer>
+
+  <script>
+    if ("scrollRestoration" in history) {
+      history.scrollRestoration = "manual";
+    }
+    if (location.hash) {
+      history.replaceState(null, document.title, window.location.pathname + window.location.search);
+    }
+    const forceTop = () => {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    };
+    window.addEventListener("load", forceTop);
+    window.addEventListener("pageshow", forceTop);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    document.querySelectorAll(".fade-in").forEach((el) => observer.observe(el));
+
+    const toggle = document.getElementById("themeToggle");
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("light");
+    });
+  </script>
+</body>
+</html>
