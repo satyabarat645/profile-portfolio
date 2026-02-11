@@ -61,6 +61,48 @@
       position: relative;
     }
 
+    .ambient-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    #particleCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.45;
+    }
+
+    .cyber-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(113, 240, 255, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(141, 101, 255, 0.07) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(circle at 50% 35%, rgba(0, 0, 0, 0.78), transparent 72%);
+      opacity: 0.32;
+    }
+
+    .cursor-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(52, 213, 255, 0.2) 0%, rgba(141, 101, 255, 0.1) 42%, transparent 72%);
+      filter: blur(24px);
+      transform: translate3d(-50%, -50%, 0);
+      transition: opacity 0.25s ease;
+      opacity: 0;
+      will-change: transform;
+    }
+
     /* Animated atmospheric gradients keep the page feeling alive without visual noise. */
     body::before,
     body::after {
@@ -167,12 +209,33 @@
       border-radius: 999px;
       padding: 7px 12px;
       transition: color 0.25s ease, background 0.25s ease;
+      position: relative;
+      isolation: isolate;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      bottom: 4px;
+      height: 1.5px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-violet));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.45s ease;
     }
 
     .nav-links a:hover,
     .nav-links a.active {
       color: var(--text-100);
       background: rgba(113, 240, 255, 0.1);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      transform: scaleX(1);
     }
 
     main {
@@ -240,6 +303,8 @@
       grid-template-columns: 1.1fr 0.9fr;
       gap: 28px;
       align-items: stretch;
+      transform: translate3d(0, var(--hero-shift, 0px), 0);
+      transition: transform 0.35s ease-out;
     }
 
     .hero-left {
@@ -296,6 +361,12 @@
       font-size: clamp(2.25rem, 7vw, 4rem);
       line-height: 1.03;
       letter-spacing: -0.035em;
+      background: linear-gradient(110deg, #f2f8ff 20%, #89e9ff 45%, #b6a6ff 68%, #f2f8ff 92%);
+      background-size: 220% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: nameFlow 7.5s ease-in-out infinite;
     }
 
     .hero-subtitle {
@@ -303,6 +374,19 @@
       color: #d9e4ff;
       font-size: clamp(0.98rem, 1.6vw, 1.18rem);
       font-weight: 500;
+      position: relative;
+      width: fit-content;
+    }
+
+    .hero-subtitle.typing::after {
+      content: "";
+      position: absolute;
+      right: -8px;
+      top: 4px;
+      height: calc(100% - 8px);
+      width: 2px;
+      background: rgba(113, 240, 255, 0.9);
+      animation: caretBlink 0.75s step-end infinite;
     }
 
     .hero-summary {
@@ -329,6 +413,9 @@
       font-weight: 600;
       border: 1px solid transparent;
       transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background-color 0.22s ease;
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
     }
 
     .btn:hover {
@@ -339,6 +426,7 @@
       color: #021118;
       background: linear-gradient(125deg, var(--accent-cyan), var(--accent-blue));
       box-shadow: 0 8px 24px rgba(52, 213, 255, 0.3);
+      animation: ctaBreath 2.8s ease-in-out infinite;
     }
 
     .btn-secondary {
@@ -411,10 +499,11 @@
     .focus-card {
       padding: 22px;
       transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
     }
 
     .focus-card:hover {
-      transform: translateY(-6px);
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-6px);
       border-color: rgba(113, 240, 255, 0.46);
       box-shadow: var(--shadow-soft), 0 0 28px rgba(52, 213, 255, 0.2);
       background: linear-gradient(135deg, rgba(16, 28, 62, 0.94), rgba(11, 18, 39, 0.8));
@@ -512,10 +601,11 @@
       grid-template-columns: minmax(220px, 0.36fr) 1fr;
       gap: 20px;
       transition: transform 0.25s ease, border-color 0.25s ease;
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
     }
 
     .timeline-item:hover {
-      transform: translateX(4px);
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateX(4px);
       border-color: rgba(113, 240, 255, 0.42);
     }
 
@@ -563,10 +653,11 @@
       border-radius: var(--radius-md);
       background: linear-gradient(140deg, rgba(15, 25, 53, 0.85), rgba(10, 16, 36, 0.68));
       transition: transform 0.24s ease, border-color 0.24s ease;
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
     }
 
     .skill-group:hover {
-      transform: translateY(-4px);
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-4px);
       border-color: rgba(113, 240, 255, 0.42);
     }
 
@@ -607,6 +698,7 @@
       border-radius: inherit;
       background: linear-gradient(90deg, var(--accent-blue), var(--accent-violet));
       opacity: 0.9;
+      transition: width 0.7s ease;
     }
 
     .cert-grid,
@@ -629,10 +721,11 @@
       background: linear-gradient(145deg, rgba(15, 26, 55, 0.88), rgba(10, 16, 36, 0.76));
       box-shadow: var(--shadow-soft);
       transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
     }
 
     .impact-card:hover {
-      transform: translateY(-5px);
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-5px);
       border-color: rgba(113, 240, 255, 0.48);
       box-shadow: var(--shadow-soft), 0 0 24px rgba(52, 213, 255, 0.18);
     }
@@ -659,6 +752,8 @@
 
     .tooling-panel {
       padding: 22px;
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+      transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
     }
 
     .tooling-panel h3 {
@@ -710,10 +805,11 @@
       display: grid;
       gap: 12px;
       transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
     }
 
     .cert-card:hover {
-      transform: translateY(-5px);
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-5px);
       border-color: rgba(113, 240, 255, 0.5);
       box-shadow: var(--shadow-soft);
     }
@@ -752,14 +848,30 @@
       background: linear-gradient(150deg, rgba(16, 26, 56, 0.87), rgba(11, 17, 39, 0.78));
       display: grid;
       gap: 10px;
-      transition: transform 0.28s ease, border-color 0.28s ease;
+      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
       position: relative;
       overflow: hidden;
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+    }
+
+    .project-card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(120deg, transparent 24%, rgba(113, 240, 255, 0.2) 50%, transparent 74%);
+      transform: translateX(-120%);
+      transition: transform 0.75s ease;
+      pointer-events: none;
     }
 
     .project-card:hover {
-      transform: translateY(-6px);
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-6px);
       border-color: rgba(113, 240, 255, 0.5);
+      box-shadow: var(--shadow-soft), 0 0 24px rgba(52, 213, 255, 0.2);
+    }
+
+    .project-card:hover::before {
+      transform: translateX(120%);
     }
 
     .project-card h3 {
@@ -801,6 +913,8 @@
       background: linear-gradient(160deg, rgba(17, 27, 58, 0.85), rgba(10, 16, 36, 0.72));
       display: grid;
       gap: 10px;
+      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+      transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
     }
 
     .contact-card a {
@@ -855,6 +969,19 @@
       transform: translateY(0);
     }
 
+    .hero-left,
+    .panel,
+    .about-card,
+    .contact-card,
+    .timeline-item,
+    .project-card,
+    .cert-card,
+    .impact-card,
+    .skill-group,
+    .tooling-panel {
+      will-change: transform;
+    }
+
     .stagger {
       transition-delay: var(--delay, 0ms);
     }
@@ -863,6 +990,12 @@
       0% { transform: scale(1); box-shadow: 0 0 20px rgba(52, 213, 255, 0.35); }
       50% { transform: scale(1.02); box-shadow: 0 0 34px rgba(141, 101, 255, 0.4); }
       100% { transform: scale(1); box-shadow: 0 0 20px rgba(52, 213, 255, 0.35); }
+    }
+
+    @keyframes nameFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     @keyframes floatCard {
@@ -874,6 +1007,23 @@
     @keyframes bgFloat {
       from { transform: translate3d(-1.5%, -1%, 0) scale(1); }
       to { transform: translate3d(1.5%, 1.2%, 0) scale(1.02); }
+    }
+
+    @keyframes caretBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    @keyframes ctaBreath {
+      0%, 100% { box-shadow: 0 8px 24px rgba(52, 213, 255, 0.3); }
+      50% { box-shadow: 0 12px 30px rgba(141, 101, 255, 0.34); }
+    }
+
+    @keyframes ripple {
+      to {
+        transform: scale(8);
+        opacity: 0;
+      }
     }
 
     @media (max-width: 1080px) {
@@ -935,10 +1085,32 @@
       .hero-right {
         grid-template-columns: 1fr;
       }
+
+      #particleCanvas,
+      .cursor-glow {
+        display: none;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      #particleCanvas,
+      .cursor-glow {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
+  <div class="ambient-layer" aria-hidden="true">
+    <canvas id="particleCanvas"></canvas>
+    <div class="cyber-grid"></div>
+    <div class="cursor-glow" id="cursorGlow"></div>
+  </div>
   <div class="scroll-progress" aria-hidden="true"><span id="progressBar"></span></div>
 
   <div class="site">
@@ -985,7 +1157,7 @@
             </div>
 
             <h1>Satyabrata Behera</h1>
-            <p class="hero-subtitle">Security Engineer | Detection Architect | SIEM &amp; SOAR Specialist</p>
+            <p class="hero-subtitle" id="typedSubtitle" data-text="Security Engineer | Detection Architect | SIEM &amp; SOAR Specialist">Security Engineer | Detection Architect | SIEM &amp; SOAR Specialist</p>
             <p class="hero-summary">
               I design detection-driven security operations that scale, automate, and respond faster than attackers,
               from telemetry ingestion through incident containment.
@@ -1480,16 +1652,46 @@
   <button id="backTop" class="back-top" type="button" aria-label="Back to top">^</button>
 
   <script>
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+
     const sections = Array.from(document.querySelectorAll("main section[id]"));
-    const navLinks = Array.from(document.querySelectorAll('.nav-links a'));
+    const navLinks = Array.from(document.querySelectorAll(".nav-links a"));
     const progressBar = document.getElementById("progressBar");
     const backTop = document.getElementById("backTop");
+    const heroGrid = document.querySelector(".hero-grid");
+    const cursorGlow = document.getElementById("cursorGlow");
+    const particleCanvas = document.getElementById("particleCanvas");
+    const typedSubtitle = document.getElementById("typedSubtitle");
+
+    // Skill bars animate from zero once they enter view to add subtle progress motion.
+    const skillBars = Array.from(document.querySelectorAll(".skill-bar span"));
+    skillBars.forEach((bar) => {
+      const target = bar.style.width || "0%";
+      bar.dataset.targetWidth = target;
+      if (!prefersReducedMotion) {
+        bar.style.width = "0%";
+      }
+    });
+
+    function animateSkillBars(container) {
+      container.querySelectorAll(".skill-bar span").forEach((bar, index) => {
+        if (!bar.dataset.animated) {
+          bar.dataset.animated = "true";
+          const target = bar.dataset.targetWidth || "0%";
+          setTimeout(() => {
+            bar.style.width = target;
+          }, index * 80);
+        }
+      });
+    }
 
     const revealObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("visible");
+            animateSkillBars(entry.target);
             revealObserver.unobserve(entry.target);
           }
         });
@@ -1498,6 +1700,157 @@
     );
 
     document.querySelectorAll(".reveal").forEach((el) => revealObserver.observe(el));
+
+    if (typedSubtitle && !prefersReducedMotion) {
+      const text = typedSubtitle.dataset.text || typedSubtitle.textContent.trim();
+      typedSubtitle.textContent = "";
+      typedSubtitle.classList.add("typing");
+      let cursor = 0;
+      const tick = () => {
+        if (cursor < text.length) {
+          typedSubtitle.textContent += text[cursor];
+          cursor += 1;
+          window.setTimeout(tick, 28);
+          return;
+        }
+        window.setTimeout(() => {
+          typedSubtitle.classList.remove("typing");
+        }, 700);
+      };
+      window.setTimeout(tick, 380);
+    }
+
+    // Adds ripple micro-interaction to CTA clicks.
+    document.querySelectorAll(".btn").forEach((button) => {
+      button.addEventListener("click", (event) => {
+        const rect = button.getBoundingClientRect();
+        const ripple = document.createElement("span");
+        ripple.className = "ripple";
+        ripple.style.left = `${event.clientX - rect.left}px`;
+        ripple.style.top = `${event.clientY - rect.top}px`;
+        ripple.style.width = "16px";
+        ripple.style.height = "16px";
+        button.appendChild(ripple);
+        ripple.addEventListener("animationend", () => ripple.remove(), { once: true });
+      });
+    });
+
+    // Mouse-follow glow keeps cyber depth subtle and non-intrusive.
+    if (cursorGlow && !isCoarsePointer && !prefersReducedMotion) {
+      window.addEventListener("pointermove", (event) => {
+        cursorGlow.style.opacity = "1";
+        cursorGlow.style.transform = `translate3d(${event.clientX}px, ${event.clientY}px, 0) translate(-50%, -50%)`;
+      }, { passive: true });
+
+      window.addEventListener("pointerleave", () => {
+        cursorGlow.style.opacity = "0";
+      });
+    }
+
+    function applyHeroParallax() {
+      if (!heroGrid || prefersReducedMotion || isCoarsePointer) {
+        return;
+      }
+      const y = Math.min(window.scrollY * 0.08, 20);
+      heroGrid.style.setProperty("--hero-shift", `${y}px`);
+    }
+
+    // Subtle tilt for cards, disabled on touch/reduced-motion for performance.
+    if (!isCoarsePointer && !prefersReducedMotion) {
+      const tiltTargets = document.querySelectorAll(
+        ".focus-card, .timeline-item, .skill-group, .impact-card, .tooling-panel, .cert-card, .project-card, .contact-card"
+      );
+
+      tiltTargets.forEach((card) => {
+        card.addEventListener("pointermove", (event) => {
+          const rect = card.getBoundingClientRect();
+          const px = (event.clientX - rect.left) / rect.width - 0.5;
+          const py = (event.clientY - rect.top) / rect.height - 0.5;
+          const rx = (-py * 4).toFixed(2);
+          const ry = (px * 5).toFixed(2);
+          card.style.setProperty("--tilt-x", `${rx}deg`);
+          card.style.setProperty("--tilt-y", `${ry}deg`);
+        });
+
+        card.addEventListener("pointerleave", () => {
+          card.style.setProperty("--tilt-x", "0deg");
+          card.style.setProperty("--tilt-y", "0deg");
+        });
+      });
+    }
+
+    // Lightweight particle network drawn in canvas for background depth.
+    if (particleCanvas && !isCoarsePointer && !prefersReducedMotion) {
+      const context = particleCanvas.getContext("2d");
+      const particles = [];
+      let rafId = null;
+      let width = 0;
+      let height = 0;
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      function resizeCanvas() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        particleCanvas.width = Math.floor(width * dpr);
+        particleCanvas.height = Math.floor(height * dpr);
+        context.setTransform(dpr, 0, 0, dpr, 0, 0);
+        const count = Math.max(30, Math.min(72, Math.floor((width * height) / 32000)));
+        particles.length = 0;
+        for (let i = 0; i < count; i += 1) {
+          particles.push({
+            x: Math.random() * width,
+            y: Math.random() * height,
+            vx: (Math.random() - 0.5) * 0.35,
+            vy: (Math.random() - 0.5) * 0.35
+          });
+        }
+      }
+
+      function drawParticles() {
+        context.clearRect(0, 0, width, height);
+        for (let i = 0; i < particles.length; i += 1) {
+          const p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < 0 || p.x > width) p.vx *= -1;
+          if (p.y < 0 || p.y > height) p.vy *= -1;
+
+          context.beginPath();
+          context.arc(p.x, p.y, 1.2, 0, Math.PI * 2);
+          context.fillStyle = "rgba(113, 240, 255, 0.45)";
+          context.fill();
+
+          for (let j = i + 1; j < particles.length; j += 1) {
+            const q = particles[j];
+            const dx = p.x - q.x;
+            const dy = p.y - q.y;
+            const distance = Math.hypot(dx, dy);
+            if (distance < 130) {
+              const alpha = (1 - distance / 130) * 0.18;
+              context.beginPath();
+              context.moveTo(p.x, p.y);
+              context.lineTo(q.x, q.y);
+              context.strokeStyle = `rgba(141, 101, 255, ${alpha})`;
+              context.lineWidth = 1;
+              context.stroke();
+            }
+          }
+        }
+        rafId = window.requestAnimationFrame(drawParticles);
+      }
+
+      resizeCanvas();
+      drawParticles();
+
+      window.addEventListener("resize", () => {
+        window.cancelAnimationFrame(rafId);
+        resizeCanvas();
+        drawParticles();
+      });
+    } else if (particleCanvas) {
+      particleCanvas.style.display = "none";
+    }
 
     function setActiveNav() {
       let activeId = sections[0]?.id || "home";
@@ -1528,6 +1881,7 @@
       setActiveNav();
       setScrollProgress();
       toggleBackToTop();
+      applyHeroParallax();
     }, { passive: true });
 
     backTop.addEventListener("click", () => {
@@ -1538,7 +1892,22 @@
       setActiveNav();
       setScrollProgress();
       toggleBackToTop();
+      applyHeroParallax();
     });
   </script>
 </body>
 </html>
+    .btn .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(0);
+      animation: ripple 0.65s ease-out;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .btn span,
+    .btn {
+      z-index: 1;
+    }
