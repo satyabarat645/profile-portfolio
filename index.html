@@ -22,7 +22,6 @@
       --bg-900: #050612;
       --bg-800: #090d1e;
       --bg-700: #121835;
-      --bg-end: #0d1430;
       --text-100: #f2f6ff;
       --text-300: #c9d4ee;
       --text-500: #8e9ab5;
@@ -41,24 +40,6 @@
       --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    [data-theme="light"] {
-      --bg-900: #edf3ff;
-      --bg-800: #dfe9ff;
-      --bg-700: #d5e2ff;
-      --bg-end: #cfdcff;
-      --text-100: #101935;
-      --text-300: #243354;
-      --text-500: #4a5c84;
-      --line: rgba(60, 84, 140, 0.2);
-      --glass: rgba(255, 255, 255, 0.62);
-      --glass-strong: rgba(255, 255, 255, 0.84);
-      --accent-blue: #2e7bff;
-      --accent-violet: #6757ff;
-      --accent-cyan: #1b7ce8;
-      --success: #00a470;
-      --shadow-soft: 0 12px 30px rgba(15, 30, 65, 0.14);
-    }
-
     * {
       box-sizing: border-box;
     }
@@ -74,7 +55,7 @@
       background:
         radial-gradient(1200px circle at 10% 5%, rgba(52, 213, 255, 0.12), transparent 50%),
         radial-gradient(900px circle at 90% 2%, rgba(141, 101, 255, 0.14), transparent 40%),
-        linear-gradient(160deg, var(--bg-900), var(--bg-800) 45%, var(--bg-end) 100%);
+        linear-gradient(160deg, var(--bg-900), var(--bg-800) 45%, #0d1430 100%);
       min-height: 100vh;
       line-height: 1.65;
       overflow-x: hidden;
@@ -286,25 +267,6 @@
       transform: scaleX(1);
     }
 
-    .theme-toggle {
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(113, 240, 255, 0.08);
-      color: var(--text-100);
-      border-radius: 999px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      padding: 8px 12px;
-      cursor: pointer;
-      transition: transform 0.28s var(--ease-standard), background-color 0.28s var(--ease-standard), border-color 0.28s var(--ease-standard);
-      white-space: nowrap;
-    }
-
-    .theme-toggle:hover {
-      transform: translateY(-1px);
-      background: rgba(113, 240, 255, 0.14);
-      border-color: rgba(113, 240, 255, 0.35);
-    }
-
     main {
       max-width: var(--container);
       margin: 0 auto;
@@ -350,44 +312,6 @@
       position: relative;
       overflow: hidden;
       transform-style: preserve-3d;
-    }
-
-    [data-theme="light"] .top-nav {
-      background: rgba(234, 242, 255, 0.72);
-      border-bottom: 1px solid rgba(66, 86, 140, 0.16);
-    }
-
-    [data-theme="light"] .glass-card,
-    [data-theme="light"] .metric-card,
-    [data-theme="light"] .soc-sim-card,
-    [data-theme="light"] .mitre-panel,
-    [data-theme="light"] .mitre-detail,
-    [data-theme="light"] .project-card,
-    [data-theme="light"] .cert-card,
-    [data-theme="light"] .impact-card,
-    [data-theme="light"] .skill-group,
-    [data-theme="light"] .tooling-panel,
-    [data-theme="light"] .contact-card,
-    [data-theme="light"] .timeline-item {
-      border-color: rgba(60, 84, 140, 0.16);
-      background: linear-gradient(155deg, rgba(255, 255, 255, 0.82), rgba(238, 245, 255, 0.76));
-      box-shadow: var(--shadow-soft);
-    }
-
-    [data-theme="light"] .section-title::before,
-    [data-theme="light"] .scroll-progress span {
-      background: linear-gradient(90deg, #2e7bff, #6757ff);
-    }
-
-    [data-theme="light"] .nav-links a:hover,
-    [data-theme="light"] .nav-links a.active {
-      background: rgba(46, 123, 255, 0.12);
-    }
-
-    [data-theme="light"] .cyber-grid,
-    [data-theme="light"] .scanline-overlay,
-    [data-theme="light"] .cursor-glow {
-      opacity: 0.04;
     }
 
     .glass-card::after {
@@ -1490,7 +1414,6 @@
           <a href="#projects">Projects</a>
           <a href="#contact">Contact</a>
         </nav>
-        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">Theme: Dark</button>
       </div>
     </header>
 
@@ -2115,7 +2038,6 @@
     const navLinks = Array.from(document.querySelectorAll(".nav-links a"));
     const progressBar = document.getElementById("progressBar");
     const backTop = document.getElementById("backTop");
-    const themeToggle = document.getElementById("themeToggle");
     const ambientLayer = document.querySelector(".ambient-layer");
     const heroGrid = document.querySelector(".hero-grid");
     const cursorGlow = document.getElementById("cursorGlow");
@@ -2484,25 +2406,6 @@
       });
     }
 
-    // Persisted theme toggle with a dark-first default and explicit user override.
-    function setTheme(mode) {
-      document.documentElement.setAttribute("data-theme", mode);
-      if (themeToggle) {
-        const isLight = mode === "light";
-        themeToggle.textContent = `Theme: ${isLight ? "Light" : "Dark"}`;
-        themeToggle.setAttribute("aria-pressed", String(isLight));
-      }
-    }
-
-    function initTheme() {
-      const stored = localStorage.getItem("portfolio-theme");
-      if (stored === "light" || stored === "dark") {
-        setTheme(stored);
-        return;
-      }
-      setTheme("dark");
-    }
-
     function setScrollProgress() {
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
@@ -2525,17 +2428,7 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    if (themeToggle) {
-      themeToggle.addEventListener("click", () => {
-        const current = document.documentElement.getAttribute("data-theme") || "dark";
-        const next = current === "dark" ? "light" : "dark";
-        setTheme(next);
-        localStorage.setItem("portfolio-theme", next);
-      });
-    }
-
     window.addEventListener("load", () => {
-      initTheme();
       setActiveNav();
       setScrollProgress();
       toggleBackToTop();
