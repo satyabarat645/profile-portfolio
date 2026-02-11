@@ -32,11 +32,12 @@
       --accent-violet: #8d65ff;
       --accent-cyan: #71f0ff;
       --success: #7cf4be;
-      --radius-lg: 22px;
-      --radius-md: 16px;
+      --radius-lg: 18px;
+      --radius-md: 18px;
       --container: 1160px;
-      --shadow-soft: 0 14px 40px rgba(3, 8, 20, 0.45);
+      --shadow-soft: 0 12px 30px rgba(3, 8, 20, 0.28);
       --shadow-glow: 0 0 0 1px rgba(113, 240, 255, 0.2), 0 0 36px rgba(52, 213, 255, 0.25);
+      --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     * {
@@ -74,7 +75,12 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      opacity: 0.45;
+      opacity: 0;
+      transition: opacity 0.9s var(--ease-standard);
+    }
+
+    .ambient-layer.ready #threeBgCanvas {
+      opacity: var(--bg-opacity, 0.26);
     }
 
     .scanline-overlay {
@@ -89,8 +95,7 @@
           transparent 4px
         );
       mix-blend-mode: screen;
-      opacity: 0.22;
-      animation: scanlineDrift 8s linear infinite;
+      opacity: 0.08;
     }
 
     .cyber-grid {
@@ -101,7 +106,15 @@
         linear-gradient(90deg, rgba(141, 101, 255, 0.07) 1px, transparent 1px);
       background-size: 64px 64px;
       mask-image: radial-gradient(circle at 50% 35%, rgba(0, 0, 0, 0.78), transparent 72%);
-      opacity: 0.32;
+      opacity: 0.22;
+    }
+
+    .ambient-layer::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 35%, transparent 38%, rgba(5, 8, 18, 0.58) 100%);
+      pointer-events: none;
     }
 
     .cursor-glow {
@@ -134,7 +147,7 @@
       background:
         radial-gradient(580px circle at 15% 20%, rgba(52, 213, 255, 0.24), transparent 62%),
         radial-gradient(720px circle at 80% 70%, rgba(141, 101, 255, 0.2), transparent 60%);
-      animation: bgFloat 16s ease-in-out infinite alternate;
+      animation: bgFloat 18.5s var(--ease-standard) infinite alternate;
     }
 
     body::after {
@@ -142,9 +155,9 @@
         linear-gradient(120deg, rgba(255, 255, 255, 0.045), transparent 30%),
         radial-gradient(circle, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
       background-size: auto, 140px 140px;
-      opacity: 0.38;
+      opacity: 0.3;
       mix-blend-mode: screen;
-      animation: bgFloat 22s ease-in-out infinite reverse;
+      animation: bgFloat 25s var(--ease-standard) infinite reverse;
     }
 
     a {
@@ -185,9 +198,9 @@
       position: sticky;
       top: 0;
       z-index: 80;
-      backdrop-filter: blur(14px);
-      background: rgba(6, 10, 24, 0.66);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      background: rgba(8, 12, 28, 0.58);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .nav-wrap {
@@ -240,7 +253,7 @@
       background: linear-gradient(90deg, var(--accent-blue), var(--accent-violet));
       transform: scaleX(0);
       transform-origin: left;
-      transition: transform 0.45s ease;
+      transition: transform 0.52s var(--ease-standard);
     }
 
     .nav-links a:hover,
@@ -292,10 +305,10 @@
 
     .glass-card {
       background: linear-gradient(155deg, rgba(15, 24, 50, 0.78), rgba(8, 14, 32, 0.58));
-      border: 1px solid var(--line);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-soft);
-      backdrop-filter: blur(12px);
+      backdrop-filter: blur(20px);
       position: relative;
       overflow: hidden;
       transform-style: preserve-3d;
@@ -320,7 +333,7 @@
       gap: 28px;
       align-items: stretch;
       transform: translate3d(0, var(--hero-shift, 0px), 0);
-      transition: transform 0.35s ease-out;
+      transition: transform 0.4s var(--ease-standard);
     }
 
     .hero-left {
@@ -342,8 +355,7 @@
       border-radius: 50%;
       padding: 4px;
       background: linear-gradient(130deg, var(--accent-blue), var(--accent-violet), var(--accent-blue));
-      animation: glowPulse 5s ease-in-out infinite;
-      box-shadow: 0 0 24px rgba(52, 213, 255, 0.35);
+      box-shadow: 0 0 16px rgba(52, 213, 255, 0.24);
       flex-shrink: 0;
     }
 
@@ -382,7 +394,6 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      animation: nameFlow 7.5s ease-in-out infinite;
     }
 
     .hero-subtitle {
@@ -428,7 +439,7 @@
       font-size: 0.92rem;
       font-weight: 600;
       border: 1px solid transparent;
-      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background-color 0.22s ease;
+      transition: transform 0.28s var(--ease-standard), box-shadow 0.28s var(--ease-standard), border-color 0.28s var(--ease-standard), background-color 0.28s var(--ease-standard);
       position: relative;
       overflow: hidden;
       isolation: isolate;
@@ -456,8 +467,8 @@
     .btn-primary {
       color: #021118;
       background: linear-gradient(125deg, var(--accent-cyan), var(--accent-blue));
-      box-shadow: 0 8px 24px rgba(52, 213, 255, 0.3);
-      animation: ctaBreath 2.8s ease-in-out infinite;
+      box-shadow: 0 7px 18px rgba(52, 213, 255, 0.22);
+      animation: ctaBreath 3.2s var(--ease-standard) infinite;
     }
 
     .btn-secondary {
@@ -481,7 +492,7 @@
     .soc-sim-card {
       padding: 16px;
       border-radius: var(--radius-md);
-      border: 1px solid rgba(141, 167, 230, 0.28);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       background:
         linear-gradient(155deg, rgba(18, 30, 66, 0.88), rgba(10, 16, 36, 0.76)),
         radial-gradient(500px circle at 90% 0%, rgba(113, 240, 255, 0.12), transparent 65%);
@@ -499,7 +510,7 @@
       inset: 0;
       background: linear-gradient(120deg, transparent 25%, rgba(113, 240, 255, 0.12) 50%, transparent 75%);
       transform: translateX(-120%);
-      transition: transform 0.7s ease;
+      transition: transform 0.8s var(--ease-standard);
       pointer-events: none;
     }
 
@@ -523,8 +534,7 @@
       height: 9px;
       border-radius: 50%;
       background: #71f0ff;
-      box-shadow: 0 0 12px rgba(113, 240, 255, 0.8);
-      animation: livePulse 1.8s ease-in-out infinite;
+      box-shadow: 0 0 8px rgba(113, 240, 255, 0.58);
       flex-shrink: 0;
     }
 
@@ -577,14 +587,14 @@
       height: 9px;
       border-radius: 50%;
       background: radial-gradient(circle, rgba(255, 137, 180, 1), rgba(141, 101, 255, 0.65));
-      box-shadow: 0 0 14px rgba(141, 101, 255, 0.7);
-      opacity: 0.65;
-      animation: bubbleRise 8s ease-in-out infinite;
+      box-shadow: 0 0 8px rgba(141, 101, 255, 0.36);
+      opacity: 0.4;
+      animation: bubbleRise 16s var(--ease-standard) infinite;
     }
 
     .alert-bubble:nth-child(1) { left: 10%; bottom: -8px; animation-delay: 0s; }
-    .alert-bubble:nth-child(2) { left: 45%; bottom: -14px; animation-delay: 1.6s; }
-    .alert-bubble:nth-child(3) { left: 80%; bottom: -10px; animation-delay: 3.1s; }
+    .alert-bubble:nth-child(2),
+    .alert-bubble:nth-child(3) { display: none; }
 
     .mitre-panel {
       margin-top: 20px;
@@ -617,8 +627,7 @@
       stroke: rgba(113, 240, 255, 0.22);
       stroke-width: 1.2;
       stroke-dasharray: 5 5;
-      stroke-dashoffset: 30;
-      animation: dashFlow 4s linear infinite;
+      stroke-dashoffset: 0;
     }
 
     .mitre-node {
@@ -630,8 +639,8 @@
       fill: rgba(17, 28, 58, 0.95);
       stroke: rgba(141, 167, 230, 0.5);
       stroke-width: 1.5;
-      filter: drop-shadow(0 0 6px rgba(113, 240, 255, 0.35));
-      transition: fill 0.35s ease, stroke 0.35s ease;
+      filter: drop-shadow(0 3px 8px rgba(10, 18, 38, 0.55));
+      transition: fill 0.45s var(--ease-standard), stroke 0.45s var(--ease-standard), filter 0.45s var(--ease-standard);
     }
 
     .mitre-node text {
@@ -645,12 +654,13 @@
     .mitre-node:hover circle,
     .mitre-node.active circle {
       fill: rgba(24, 40, 85, 0.96);
-      stroke: rgba(113, 240, 255, 0.85);
+      stroke: rgba(113, 240, 255, 0.56);
+      filter: drop-shadow(0 5px 12px rgba(10, 18, 38, 0.6));
     }
 
     .mitre-node:hover,
     .mitre-node.active {
-      transform: scale(1.05);
+      transform: scale(1.03);
     }
 
     .mitre-tooltip {
@@ -721,25 +731,17 @@
     .metric-card {
       padding: 18px;
       border-radius: var(--radius-md);
-      border: 1px solid rgba(141, 167, 230, 0.24);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       background: linear-gradient(145deg, rgba(17, 27, 58, 0.92), rgba(12, 18, 41, 0.76));
       box-shadow: var(--shadow-soft);
       display: grid;
       gap: 8px;
-      animation: floatCard 6s ease-in-out infinite;
       will-change: transform;
     }
 
-    .metric-card:nth-child(2) {
-      animation-delay: 0.8s;
-    }
-
-    .metric-card:nth-child(3) {
-      animation-delay: 1.6s;
-    }
-
-    .metric-card:nth-child(4) {
-      animation-delay: 2.2s;
+    .hero-right > .metric-card {
+      opacity: 0;
+      transform: translateY(10px);
     }
 
     .metric-label {
@@ -767,16 +769,17 @@
       gap: 16px;
     }
 
+    /* Executive mode: restrained hover feedback for non-hero sections. */
     .focus-card {
       padding: 22px;
-      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
-      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+      transition: transform 0.34s var(--ease-standard), border-color 0.34s var(--ease-standard), box-shadow 0.34s var(--ease-standard), background 0.34s var(--ease-standard);
+      transform: scale(1);
     }
 
     .focus-card:hover {
-      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-6px);
-      border-color: rgba(113, 240, 255, 0.46);
-      box-shadow: var(--shadow-soft), 0 0 28px rgba(52, 213, 255, 0.2);
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 14px 30px rgba(3, 8, 20, 0.32);
       background: linear-gradient(135deg, rgba(16, 28, 62, 0.94), rgba(11, 18, 39, 0.8));
     }
 
@@ -800,7 +803,7 @@
     }
 
     .focus-card:hover .focus-icon {
-      transform: rotate(-6deg) scale(1.08);
+      transform: scale(1.05);
     }
 
     .focus-card h3 {
@@ -871,13 +874,14 @@
       display: grid;
       grid-template-columns: minmax(220px, 0.36fr) 1fr;
       gap: 20px;
-      transition: transform 0.25s ease, border-color 0.25s ease;
-      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+      transition: transform 0.32s var(--ease-standard), border-color 0.32s var(--ease-standard), box-shadow 0.32s var(--ease-standard);
+      transform: scale(1);
     }
 
     .timeline-item:hover {
-      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateX(4px);
-      border-color: rgba(113, 240, 255, 0.42);
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 14px 30px rgba(3, 8, 20, 0.32);
     }
 
     .timeline-item::before {
@@ -889,7 +893,7 @@
       left: -24px;
       top: 28px;
       background: var(--accent-cyan);
-      box-shadow: 0 0 14px rgba(52, 213, 255, 0.8);
+      box-shadow: 0 0 8px rgba(52, 213, 255, 0.42);
     }
 
     .role-meta h3 {
@@ -923,13 +927,14 @@
       border: 1px solid rgba(141, 167, 230, 0.22);
       border-radius: var(--radius-md);
       background: linear-gradient(140deg, rgba(15, 25, 53, 0.85), rgba(10, 16, 36, 0.68));
-      transition: transform 0.24s ease, border-color 0.24s ease;
-      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+      transition: transform 0.32s var(--ease-standard), border-color 0.32s var(--ease-standard), box-shadow 0.32s var(--ease-standard);
+      transform: scale(1);
     }
 
     .skill-group:hover {
-      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-4px);
-      border-color: rgba(113, 240, 255, 0.42);
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 14px 30px rgba(3, 8, 20, 0.32);
     }
 
     .skill-group h3 {
@@ -991,14 +996,14 @@
       border: 1px solid rgba(141, 167, 230, 0.24);
       background: linear-gradient(145deg, rgba(15, 26, 55, 0.88), rgba(10, 16, 36, 0.76));
       box-shadow: var(--shadow-soft);
-      transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
-      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+      transition: transform 0.32s var(--ease-standard), border-color 0.32s var(--ease-standard), box-shadow 0.32s var(--ease-standard);
+      transform: scale(1);
     }
 
     .impact-card:hover {
-      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-5px);
-      border-color: rgba(113, 240, 255, 0.48);
-      box-shadow: var(--shadow-soft), 0 0 24px rgba(52, 213, 255, 0.18);
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 14px 30px rgba(3, 8, 20, 0.32);
     }
 
     .impact-value {
@@ -1023,8 +1028,14 @@
 
     .tooling-panel {
       padding: 22px;
-      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
-      transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+      transform: scale(1);
+      transition: transform 0.32s var(--ease-standard), border-color 0.32s var(--ease-standard), box-shadow 0.32s var(--ease-standard);
+    }
+
+    .tooling-panel:hover {
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 14px 30px rgba(3, 8, 20, 0.32);
     }
 
     .tooling-panel h3 {
@@ -1053,9 +1064,9 @@
     }
 
     .chip:hover {
-      transform: translateY(-2px);
-      border-color: rgba(113, 240, 255, 0.55);
-      background: rgba(113, 240, 255, 0.14);
+      transform: translateY(-1px);
+      border-color: rgba(255, 255, 255, 0.16);
+      background: rgba(113, 240, 255, 0.1);
     }
 
     .compliance-list {
@@ -1075,14 +1086,14 @@
       background: linear-gradient(145deg, rgba(16, 26, 57, 0.86), rgba(10, 17, 39, 0.74));
       display: grid;
       gap: 12px;
-      transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
-      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+      transition: transform 0.32s var(--ease-standard), border-color 0.32s var(--ease-standard), box-shadow 0.32s var(--ease-standard);
+      transform: scale(1);
     }
 
     .cert-card:hover {
-      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-5px);
-      border-color: rgba(113, 240, 255, 0.5);
-      box-shadow: var(--shadow-soft);
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 14px 30px rgba(3, 8, 20, 0.32);
     }
 
     .cert-logo {
@@ -1119,30 +1130,26 @@
       background: linear-gradient(150deg, rgba(16, 26, 56, 0.87), rgba(11, 17, 39, 0.78));
       display: grid;
       gap: 10px;
-      transition: transform 0.28s ease, border-color 0.28s ease, box-shadow 0.28s ease;
+      transition: transform 0.34s var(--ease-standard), border-color 0.34s var(--ease-standard), box-shadow 0.34s var(--ease-standard);
       position: relative;
       overflow: hidden;
-      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+      transform: scale(1);
     }
 
     .project-card::before {
       content: "";
       position: absolute;
       inset: -2px;
-      background: linear-gradient(120deg, transparent 24%, rgba(113, 240, 255, 0.2) 50%, transparent 74%);
-      transform: translateX(-120%);
-      transition: transform 0.75s ease;
+      background: none;
+      transform: translateX(0);
+      transition: none;
       pointer-events: none;
     }
 
     .project-card:hover {
-      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) translateY(-6px);
-      border-color: rgba(113, 240, 255, 0.5);
-      box-shadow: var(--shadow-soft), 0 0 24px rgba(52, 213, 255, 0.2);
-    }
-
-    .project-card:hover::before {
-      transform: translateX(120%);
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 14px 30px rgba(3, 8, 20, 0.32);
     }
 
     .project-card h3 {
@@ -1184,8 +1191,14 @@
       background: linear-gradient(160deg, rgba(17, 27, 58, 0.85), rgba(10, 16, 36, 0.72));
       display: grid;
       gap: 10px;
-      transform: perspective(900px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
-      transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+      transform: scale(1);
+      transition: transform 0.32s var(--ease-standard), border-color 0.32s var(--ease-standard), box-shadow 0.32s var(--ease-standard);
+    }
+
+    .contact-card:hover {
+      transform: translateY(-2px) scale(1.02);
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow: 0 14px 30px rgba(3, 8, 20, 0.32);
     }
 
     .contact-card a {
@@ -1231,8 +1244,8 @@
     /* Shared reveal animation keeps section motion subtle and consistent. */
     .reveal {
       opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+      transform: translateY(10px);
+      transition: opacity 0.8s var(--ease-standard), transform 0.8s var(--ease-standard);
     }
 
     .reveal.visible {
@@ -1257,24 +1270,6 @@
       transition-delay: var(--delay, 0ms);
     }
 
-    @keyframes glowPulse {
-      0% { transform: scale(1); box-shadow: 0 0 20px rgba(52, 213, 255, 0.35); }
-      50% { transform: scale(1.02); box-shadow: 0 0 34px rgba(141, 101, 255, 0.4); }
-      100% { transform: scale(1); box-shadow: 0 0 20px rgba(52, 213, 255, 0.35); }
-    }
-
-    @keyframes nameFlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    @keyframes floatCard {
-      0% { transform: translateY(0px); }
-      50% { transform: translateY(-6px); }
-      100% { transform: translateY(0px); }
-    }
-
     @keyframes bgFloat {
       from { transform: translate3d(-1.5%, -1%, 0) scale(1); }
       to { transform: translate3d(1.5%, 1.2%, 0) scale(1.02); }
@@ -1286,8 +1281,8 @@
     }
 
     @keyframes ctaBreath {
-      0%, 100% { box-shadow: 0 8px 24px rgba(52, 213, 255, 0.3); }
-      50% { box-shadow: 0 12px 30px rgba(141, 101, 255, 0.34); }
+      0%, 100% { box-shadow: 0 7px 18px rgba(52, 213, 255, 0.22); }
+      50% { box-shadow: 0 10px 22px rgba(141, 101, 255, 0.24); }
     }
 
     @keyframes ripple {
@@ -1385,23 +1380,10 @@
 
     @keyframes bubbleRise {
       0% { transform: translateY(0) scale(0.8); opacity: 0; }
-      15% { opacity: 0.8; }
+      15% { opacity: 0.5; }
       100% { transform: translateY(-120px) scale(1.08); opacity: 0; }
     }
 
-    @keyframes livePulse {
-      0%, 100% { box-shadow: 0 0 12px rgba(113, 240, 255, 0.8); transform: scale(1); }
-      50% { box-shadow: 0 0 20px rgba(113, 240, 255, 1); transform: scale(1.12); }
-    }
-
-    @keyframes dashFlow {
-      to { stroke-dashoffset: -30; }
-    }
-
-    @keyframes scanlineDrift {
-      from { transform: translateY(0); }
-      to { transform: translateY(8px); }
-    }
   </style>
 </head>
 <body>
@@ -2056,6 +2038,7 @@
     const navLinks = Array.from(document.querySelectorAll(".nav-links a"));
     const progressBar = document.getElementById("progressBar");
     const backTop = document.getElementById("backTop");
+    const ambientLayer = document.querySelector(".ambient-layer");
     const heroGrid = document.querySelector(".hero-grid");
     const cursorGlow = document.getElementById("cursorGlow");
     const threeBgCanvas = document.getElementById("threeBgCanvas");
@@ -2123,7 +2106,7 @@
           typedSubtitle.classList.remove("typing");
         }, 700);
       };
-      window.setTimeout(tick, 380);
+      window.setTimeout(tick, 620);
     }
 
     // Adds ripple micro-interaction to CTA clicks.
@@ -2161,10 +2144,16 @@
       heroGrid.style.setProperty("--hero-shift", `${y}px`);
     }
 
-    // Subtle tilt for cards, disabled on touch/reduced-motion for performance.
+    function tuneAmbientForScroll() {
+      if (!ambientLayer) return;
+      const level = window.scrollY < 900 ? 0.26 : 0.15;
+      ambientLayer.style.setProperty("--bg-opacity", `${level}`);
+    }
+
+    // Keep kinetic tilt only in hero to maintain executive calm in lower sections.
     if (!isCoarsePointer && !prefersReducedMotion) {
       const tiltTargets = document.querySelectorAll(
-        ".focus-card, .timeline-item, .skill-group, .impact-card, .tooling-panel, .cert-card, .project-card, .contact-card"
+        ".hero-left, #socSimCard"
       );
 
       tiltTargets.forEach((card) => {
@@ -2202,7 +2191,9 @@
       const group = new THREE.Group();
       scene.add(group);
 
-      const count = 180;
+      // Lower node density for calmer visuals and higher frame stability.
+      const isCompact = window.innerWidth < 1000;
+      const count = isCompact ? 120 : 160;
       const positions = new Float32Array(count * 3);
       for (let i = 0; i < count; i += 1) {
         positions[i * 3] = (Math.random() - 0.5) * 220;
@@ -2234,7 +2225,7 @@
           const dy = ay - by;
           const dz = az - bz;
           const d = Math.sqrt(dx * dx + dy * dy + dz * dz);
-          if (d < 28) {
+          if (d < (isCompact ? 24 : 26)) {
             linePositions.push(ax, ay, az, bx, by, bz);
           }
         }
@@ -2258,16 +2249,18 @@
 
       let t = 0;
       const tick = () => {
-        t += 0.0038;
-        group.rotation.y = t * 0.6 + pointer.x * 0.12;
-        group.rotation.x = Math.sin(t * 0.8) * 0.07 + pointer.y * 0.08;
-        group.position.y = Math.sin(t * 2.2) * 1.8;
-        camera.position.x += ((pointer.x * 8) - camera.position.x) * 0.03;
-        camera.position.y += ((pointer.y * 5) - camera.position.y) * 0.03;
+        t += 0.0032;
+        group.rotation.y = t * 0.48 + pointer.x * 0.08;
+        group.rotation.x = Math.sin(t * 0.7) * 0.05 + pointer.y * 0.06;
+        group.position.y = Math.sin(t * 1.6) * 1.1;
+        camera.position.x += ((pointer.x * 6) - camera.position.x) * 0.022;
+        camera.position.y += ((pointer.y * 4) - camera.position.y) * 0.022;
         renderer.render(scene, camera);
         requestAnimationFrame(tick);
       };
       tick();
+
+      document.querySelector(".ambient-layer")?.classList.add("ready");
 
       window.addEventListener("resize", () => {
         camera.aspect = window.innerWidth / window.innerHeight;
@@ -2283,7 +2276,7 @@
           const obj = { v: 0 };
           gsap.to(obj, {
             v: target,
-            duration: 1.2 + idx * 0.2,
+            duration: 1.38 + idx * 0.24,
             ease: "power2.out",
             onUpdate: () => {
               el.textContent = `${Math.round(obj.v)}`;
@@ -2298,7 +2291,7 @@
         const height = socWave.height;
         let phase = 0;
         const draw = () => {
-          phase += 0.045;
+          phase += 0.038;
           ctx.clearRect(0, 0, width, height);
           ctx.strokeStyle = "rgba(113,240,255,0.9)";
           ctx.lineWidth = 2;
@@ -2346,9 +2339,6 @@
           mitreTooltip.style.left = `${event.clientX - rect.left}px`;
           mitreTooltip.style.top = `${event.clientY - rect.top}px`;
           mitreTooltip.classList.add("show");
-          if (typeof gsap !== "undefined") {
-            gsap.to(node, { scale: 1.08, duration: 0.35, ease: "power2.out" });
-          }
         });
 
         node.addEventListener("mousemove", (event) => {
@@ -2359,24 +2349,46 @@
 
         node.addEventListener("mouseleave", () => {
           mitreTooltip.classList.remove("show");
-          if (!node.classList.contains("active") && typeof gsap !== "undefined") {
-            gsap.to(node, { scale: 1, duration: 0.35, ease: "power2.out" });
-          }
         });
 
         node.addEventListener("click", () => updateMitreDetail(node));
       });
 
       if (typeof gsap !== "undefined" && !prefersReducedMotion) {
-        const links = mitrePanel.querySelectorAll(".mitre-link");
-        gsap.from(links, { opacity: 0, duration: 0.6, stagger: 0.03, ease: "power2.out" });
-        gsap.from(mitreNodes, { opacity: 0, scale: 0.7, duration: 0.5, stagger: 0.04, ease: "back.out(1.4)" });
+        const revealOnce = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            const links = mitrePanel.querySelectorAll(".mitre-link");
+            gsap.from(links, { opacity: 0, duration: 0.75, stagger: 0.04, ease: "power2.out" });
+            gsap.from(mitreNodes, { opacity: 0, y: 10, duration: 0.68, stagger: 0.05, ease: "power2.out" });
+            observer.unobserve(entry.target);
+          });
+        }, { threshold: 0.22 });
+        revealOnce.observe(mitrePanel);
       }
     }
 
-    initThreeBackground();
-    initSocSimulation();
-    initMitreInteractive();
+    function initHeroSequence() {
+      if (typeof gsap === "undefined" || prefersReducedMotion) return;
+      const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+      tl.from(".hero-left", { opacity: 0, y: 14, duration: 0.78 })
+        .from(".hero-left h1, .hero-summary, .cta-row", { opacity: 0, y: 12, duration: 0.72, stagger: 0.08 }, "-=0.52")
+        .from("#socSimCard", { opacity: 0, y: 12, duration: 0.72 }, "-=0.5")
+        .to(".hero-right > .metric-card", { opacity: 1, y: 0, duration: 0.68, stagger: 0.08 }, "-=0.42");
+    }
+
+    // Progressive enhancement: start heavy visuals after initial content paint.
+    const deferredStart = () => {
+      initThreeBackground();
+      initSocSimulation();
+      initMitreInteractive();
+      initHeroSequence();
+    };
+    if ("requestIdleCallback" in window) {
+      window.requestIdleCallback(deferredStart, { timeout: 900 });
+    } else {
+      window.setTimeout(deferredStart, 260);
+    }
 
     function setActiveNav() {
       let activeId = sections[0]?.id || "home";
@@ -2408,6 +2420,7 @@
       setScrollProgress();
       toggleBackToTop();
       applyHeroParallax();
+      tuneAmbientForScroll();
     }, { passive: true });
 
     backTop.addEventListener("click", () => {
@@ -2419,6 +2432,7 @@
       setScrollProgress();
       toggleBackToTop();
       applyHeroParallax();
+      tuneAmbientForScroll();
     });
   </script>
 </body>
