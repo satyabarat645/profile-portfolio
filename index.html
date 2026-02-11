@@ -616,6 +616,91 @@
       gap: 16px;
     }
 
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .impact-card {
+      padding: 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(141, 167, 230, 0.24);
+      background: linear-gradient(145deg, rgba(15, 26, 55, 0.88), rgba(10, 16, 36, 0.76));
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+    }
+
+    .impact-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(113, 240, 255, 0.48);
+      box-shadow: var(--shadow-soft), 0 0 24px rgba(52, 213, 255, 0.18);
+    }
+
+    .impact-value {
+      margin: 0 0 8px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.35rem, 3vw, 1.75rem);
+      line-height: 1.1;
+      color: #eff5ff;
+    }
+
+    .impact-label {
+      margin: 0;
+      color: var(--text-300);
+      font-size: 0.92rem;
+    }
+
+    .tooling-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 16px;
+    }
+
+    .tooling-panel {
+      padding: 22px;
+    }
+
+    .tooling-panel h3 {
+      margin: 0 0 12px;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 1rem;
+    }
+
+    .chip-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      border: 1px solid rgba(113, 240, 255, 0.34);
+      background: rgba(113, 240, 255, 0.08);
+      color: #e9f4ff;
+      font-size: 0.84rem;
+      font-weight: 500;
+      padding: 7px 12px;
+      transition: transform 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .chip:hover {
+      transform: translateY(-2px);
+      border-color: rgba(113, 240, 255, 0.55);
+      background: rgba(113, 240, 255, 0.14);
+    }
+
+    .compliance-list {
+      margin: 0;
+      padding-left: 18px;
+      display: grid;
+      gap: 9px;
+      color: var(--text-300);
+      font-size: 0.92rem;
+    }
+
     .cert-card {
       padding: 18px;
       text-decoration: none;
@@ -795,7 +880,8 @@
       .hero-grid,
       .timeline-item,
       .cert-grid,
-      .project-grid {
+      .project-grid,
+      .impact-grid {
         grid-template-columns: 1fr;
       }
 
@@ -805,7 +891,8 @@
 
       .focus-grid,
       .snapshot-grid,
-      .skill-grid {
+      .skill-grid,
+      .tooling-layout {
         grid-template-columns: 1fr;
       }
 
@@ -839,7 +926,9 @@
       .timeline-item,
       .skill-group,
       .project-card,
-      .cert-card {
+      .cert-card,
+      .impact-card,
+      .tooling-panel {
         padding: 18px;
       }
 
@@ -863,7 +952,9 @@
           <a href="#about">About</a>
           <a href="#education">Education</a>
           <a href="#experience">Experience</a>
+          <a href="#impact">Impact</a>
           <a href="#skills">Skills</a>
+          <a href="#tooling">Tooling</a>
           <a href="#certifications">Certifications</a>
           <a href="#achievements">Achievements</a>
           <a href="#projects">Projects</a>
@@ -1079,6 +1170,38 @@
         </div>
       </section>
 
+      <section id="impact" class="reveal">
+        <h2 class="section-title">Operational Impact</h2>
+        <p class="section-subtitle">Additional quantified outcomes documented in the latest resume delivery highlights.</p>
+
+        <div class="impact-grid">
+          <article class="impact-card reveal">
+            <p class="impact-value">30 mins</p>
+            <p class="impact-label">Average incident response time reduced through real-time monitoring and correlation.</p>
+          </article>
+          <article class="impact-card reveal">
+            <p class="impact-value">1000+ Logs/Week</p>
+            <p class="impact-label">System logs correlated weekly to strengthen alert context and SOC visibility.</p>
+          </article>
+          <article class="impact-card reveal">
+            <p class="impact-value">15 Vulnerabilities</p>
+            <p class="impact-label">Discovered and documented during testing, including 2 critical and 3 high severity findings.</p>
+          </article>
+          <article class="impact-card reveal">
+            <p class="impact-value">40% Faster</p>
+            <p class="impact-label">Threat response improvements achieved by integrating vulnerability findings into detection protocols.</p>
+          </article>
+          <article class="impact-card reveal">
+            <p class="impact-value">95% Accuracy</p>
+            <p class="impact-label">Critical vulnerability identification accuracy during VAPT training and assessments.</p>
+          </article>
+          <article class="impact-card reveal">
+            <p class="impact-value">45% Risk Reduction</p>
+            <p class="impact-label">Security risk lowered through remediation-focused vulnerability and penetration testing support.</p>
+          </article>
+        </div>
+      </section>
+
       <section id="skills" class="reveal">
         <h2 class="section-title">Skills Matrix</h2>
         <p class="section-subtitle">Grouped by function with visual strength indicators for quick recruiter scanning.</p>
@@ -1174,6 +1297,43 @@
         </div>
       </section>
 
+      <section id="tooling" class="reveal">
+        <h2 class="section-title">Advanced Tooling &amp; Framework Coverage</h2>
+        <p class="section-subtitle">Extended platform stack and standards alignment from recent resume experience.</p>
+
+        <div class="tooling-layout">
+          <article class="tooling-panel glass-card reveal">
+            <h3>SOC and Detection Toolchain</h3>
+            <div class="chip-cloud">
+              <span class="chip">Fluent Bit</span>
+              <span class="chip">Graylog</span>
+              <span class="chip">TheHive</span>
+              <span class="chip">Cortex</span>
+              <span class="chip">MISP</span>
+              <span class="chip">Wazuh</span>
+              <span class="chip">Keycloak</span>
+              <span class="chip">Zitadel</span>
+              <span class="chip">Qualys</span>
+              <span class="chip">Maltego</span>
+              <span class="chip">VirusTotal</span>
+              <span class="chip">ZAP Proxy</span>
+              <span class="chip">Metasploit</span>
+            </div>
+          </article>
+
+          <article class="tooling-panel glass-card reveal">
+            <h3>Standards and Validation Scope</h3>
+            <ul class="compliance-list">
+              <li>ISO 27001 and NIST aligned security operations perspective</li>
+              <li>MITRE ATT&amp;CK mapping for detection engineering and coverage explainability</li>
+              <li>OWASP Top 10 and OWASP API Security Top 10 testing workflows</li>
+              <li>JWT and OAuth 2.0 validation during API security testing</li>
+              <li>CVSS scoring and remediation validation through structured re-testing</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
       <section id="certifications" class="reveal">
         <h2 class="section-title">Certifications</h2>
         <div class="cert-grid">
@@ -1194,20 +1354,43 @@
             <h3 class="cert-title">TCS Cybersecurity Analyst Job Simulation (Forage, Feb 2024)</h3>
             <span class="verify">Credential Completed</span>
           </article>
+
+          <article class="cert-card reveal">
+            <div class="cert-logo">INT</div>
+            <h3 class="cert-title">Ethical Hacking (Internshala)</h3>
+            <span class="verify">Credential Completed</span>
+          </article>
+
+          <article class="cert-card reveal">
+            <div class="cert-logo">LNK</div>
+            <h3 class="cert-title">LinkedIn Skill Assessment - Cyber Security</h3>
+            <span class="verify">Assessment Passed</span>
+          </article>
         </div>
       </section>
 
       <section id="achievements" class="reveal">
         <h2 class="section-title">Achievements</h2>
-        <article class="project-card reveal">
-          <h3>Research Publication</h3>
-          <div class="kv">
-            <div><strong>Title:</strong> KYC Verification in Banking System Based on Blockchain</div>
-            <div><strong>Published:</strong> JETIR, June 2024</div>
-            <div><strong>Contribution:</strong> Demonstrated practical security and trust enhancement via blockchain workflow.</div>
-          </div>
-          <a class="mini-cta" href="certificates/JETIR2406115.pdf" target="_blank" rel="noopener">View Publication</a>
-        </article>
+        <div class="project-grid">
+          <article class="project-card reveal">
+            <h3>Research Publication</h3>
+            <div class="kv">
+              <div><strong>Title:</strong> KYC Verification in Banking System Based on Blockchain</div>
+              <div><strong>Published:</strong> JETIR, June 2024</div>
+              <div><strong>Contribution:</strong> Demonstrated practical security and trust enhancement via blockchain workflow.</div>
+            </div>
+            <a class="mini-cta" href="certificates/JETIR2406115.pdf" target="_blank" rel="noopener">View Publication</a>
+          </article>
+
+          <article class="project-card reveal">
+            <h3>Hands-on Lab Milestone</h3>
+            <div class="kv">
+              <div><strong>Platform:</strong> PortSwigger Web Security Academy</div>
+              <div><strong>Coverage:</strong> 60+ practical labs across XSS, SQL Injection, and IDOR scenarios.</div>
+              <div><strong>Outcome:</strong> Stronger offensive-to-defensive understanding applied to detection engineering.</div>
+            </div>
+          </article>
+        </div>
       </section>
 
       <section id="projects" class="reveal">
@@ -1249,6 +1432,30 @@
               <div><strong>Impact:</strong> Research-backed implementation direction published in JETIR.</div>
             </div>
             <a class="mini-cta" href="#achievements">View Architecture</a>
+          </article>
+
+          <article class="project-card reveal">
+            <h3>MDR Platform Development</h3>
+            <div class="kv">
+              <div><strong>Problem:</strong> Fragmented detection and response across multiple SOC technologies.</div>
+              <div><strong>Approach:</strong> Designed MDR architecture integrating SIEM, log management, SOAR, and threat intelligence.</div>
+              <div><strong>Outcome:</strong> Centralized detection and incident-response orchestration for consistent SOC operations.</div>
+              <div><strong>Tools:</strong> Wazuh, Graylog, TheHive, Cortex, MISP</div>
+              <div><strong>Impact:</strong> Improved triage efficiency and operational consistency across workflows.</div>
+            </div>
+            <a class="mini-cta" href="#tooling">View Architecture</a>
+          </article>
+
+          <article class="project-card reveal">
+            <h3>API Security and VAPT Validation</h3>
+            <div class="kv">
+              <div><strong>Problem:</strong> API and web attack surfaces required deeper validation and remediation tracking.</div>
+              <div><strong>Approach:</strong> Tested for IDOR, broken authentication, sensitive data exposure, SQLi, XSS, and misconfigurations.</div>
+              <div><strong>Outcome:</strong> Findings documented with PoC evidence, CVSS scoring, and mitigation guidance.</div>
+              <div><strong>Tools:</strong> Nmap, Nessus, Burp Suite, Metasploit</div>
+              <div><strong>Impact:</strong> Supported secure hardening through remediation validation and re-testing cycles.</div>
+            </div>
+            <a class="mini-cta" href="#contact">View Architecture</a>
           </article>
         </div>
       </section>
