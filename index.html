@@ -2371,9 +2371,10 @@
     function initHeroSequence() {
       if (typeof gsap === "undefined" || prefersReducedMotion) return;
       const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
-      tl.from(".hero-left", { opacity: 0, y: 14, duration: 0.78 })
-        .from(".hero-left h1, .hero-summary, .cta-row", { opacity: 0, y: 12, duration: 0.72, stagger: 0.08 }, "-=0.52")
-        .from("#socSimCard", { opacity: 0, y: 12, duration: 0.72 }, "-=0.5")
+      // Hero elements also carry .reveal styles; force explicit final visibility to avoid staying hidden.
+      tl.fromTo(".hero-left", { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.78 })
+        .fromTo(".hero-left h1, .hero-summary, .cta-row", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.72, stagger: 0.08 }, "-=0.52")
+        .fromTo("#socSimCard", { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.72 }, "-=0.5")
         .to(".hero-right > .metric-card", { opacity: 1, y: 0, duration: 0.68, stagger: 0.08 }, "-=0.42");
     }
 
