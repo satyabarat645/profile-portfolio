@@ -69,12 +69,28 @@
       overflow: hidden;
     }
 
-    #particleCanvas {
+    #threeBgCanvas {
       position: absolute;
       inset: 0;
       width: 100%;
       height: 100%;
       opacity: 0.45;
+    }
+
+    .scanline-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255, 255, 255, 0.02) 0px,
+          rgba(255, 255, 255, 0.02) 1px,
+          transparent 2px,
+          transparent 4px
+        );
+      mix-blend-mode: screen;
+      opacity: 0.22;
+      animation: scanlineDrift 8s linear infinite;
     }
 
     .cyber-grid {
@@ -445,6 +461,246 @@
       display: grid;
       gap: 14px;
       align-content: start;
+    }
+
+    .soc-sim-card {
+      padding: 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(141, 167, 230, 0.28);
+      background:
+        linear-gradient(155deg, rgba(18, 30, 66, 0.88), rgba(10, 16, 36, 0.76)),
+        radial-gradient(500px circle at 90% 0%, rgba(113, 240, 255, 0.12), transparent 65%);
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      gap: 12px;
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+    }
+
+    .soc-sim-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 25%, rgba(113, 240, 255, 0.12) 50%, transparent 75%);
+      transform: translateX(-120%);
+      transition: transform 0.7s ease;
+      pointer-events: none;
+    }
+
+    .soc-sim-card:hover::before {
+      transform: translateX(120%);
+    }
+
+    .soc-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: var(--text-500);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .live-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #71f0ff;
+      box-shadow: 0 0 12px rgba(113, 240, 255, 0.8);
+      animation: livePulse 1.8s ease-in-out infinite;
+      flex-shrink: 0;
+    }
+
+    .soc-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .soc-kpi {
+      border: 1px solid rgba(113, 240, 255, 0.2);
+      background: rgba(12, 19, 43, 0.72);
+      border-radius: 12px;
+      padding: 8px 10px;
+      display: grid;
+      gap: 3px;
+    }
+
+    .soc-kpi-label {
+      font-size: 0.65rem;
+      color: var(--text-500);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .soc-kpi-value {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 0.97rem;
+      color: #f2f7ff;
+    }
+
+    .soc-wave {
+      width: 100%;
+      height: 58px;
+      border-radius: 12px;
+      border: 1px solid rgba(141, 167, 230, 0.2);
+      background: linear-gradient(140deg, rgba(9, 16, 36, 0.9), rgba(15, 24, 52, 0.65));
+    }
+
+    .alert-bubbles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .alert-bubble {
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 137, 180, 1), rgba(141, 101, 255, 0.65));
+      box-shadow: 0 0 14px rgba(141, 101, 255, 0.7);
+      opacity: 0.65;
+      animation: bubbleRise 8s ease-in-out infinite;
+    }
+
+    .alert-bubble:nth-child(1) { left: 10%; bottom: -8px; animation-delay: 0s; }
+    .alert-bubble:nth-child(2) { left: 45%; bottom: -14px; animation-delay: 1.6s; }
+    .alert-bubble:nth-child(3) { left: 80%; bottom: -10px; animation-delay: 3.1s; }
+
+    .mitre-panel {
+      margin-top: 20px;
+      padding: 18px;
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(141, 167, 230, 0.22);
+      background: linear-gradient(150deg, rgba(14, 24, 51, 0.85), rgba(10, 16, 36, 0.7));
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 14px;
+      align-items: stretch;
+    }
+
+    .mitre-map {
+      border: 1px solid rgba(141, 167, 230, 0.2);
+      border-radius: 14px;
+      background: radial-gradient(circle at 50% 30%, rgba(113, 240, 255, 0.08), rgba(8, 14, 31, 0.88));
+      position: relative;
+      overflow: hidden;
+      min-height: 270px;
+    }
+
+    .mitre-svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .mitre-link {
+      stroke: rgba(113, 240, 255, 0.22);
+      stroke-width: 1.2;
+      stroke-dasharray: 5 5;
+      stroke-dashoffset: 30;
+      animation: dashFlow 4s linear infinite;
+    }
+
+    .mitre-node {
+      cursor: pointer;
+      transition: transform 0.35s ease, filter 0.35s ease;
+    }
+
+    .mitre-node circle {
+      fill: rgba(17, 28, 58, 0.95);
+      stroke: rgba(141, 167, 230, 0.5);
+      stroke-width: 1.5;
+      filter: drop-shadow(0 0 6px rgba(113, 240, 255, 0.35));
+      transition: fill 0.35s ease, stroke 0.35s ease;
+    }
+
+    .mitre-node text {
+      fill: #dce8ff;
+      font-size: 8px;
+      font-family: "Inter", sans-serif;
+      pointer-events: none;
+      text-anchor: middle;
+    }
+
+    .mitre-node:hover circle,
+    .mitre-node.active circle {
+      fill: rgba(24, 40, 85, 0.96);
+      stroke: rgba(113, 240, 255, 0.85);
+    }
+
+    .mitre-node:hover,
+    .mitre-node.active {
+      transform: scale(1.05);
+    }
+
+    .mitre-tooltip {
+      position: absolute;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid rgba(113, 240, 255, 0.4);
+      background: rgba(9, 15, 34, 0.9);
+      color: #e8f4ff;
+      font-size: 0.76rem;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, -130%);
+      transition: opacity 0.2s ease;
+      white-space: nowrap;
+      z-index: 2;
+    }
+
+    .mitre-tooltip.show {
+      opacity: 1;
+    }
+
+    .mitre-detail {
+      border: 1px solid rgba(141, 167, 230, 0.2);
+      border-radius: 14px;
+      background: linear-gradient(150deg, rgba(9, 15, 34, 0.88), rgba(15, 24, 52, 0.75));
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+      align-content: start;
+    }
+
+    .mitre-detail h4 {
+      margin: 0;
+      font-family: "Space Grotesk", sans-serif;
+      font-size: 0.95rem;
+      color: #eff5ff;
+    }
+
+    .mitre-metric {
+      display: grid;
+      gap: 4px;
+    }
+
+    .mitre-metric-label {
+      font-size: 0.73rem;
+      color: var(--text-500);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .mitre-metric-bar {
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(141, 167, 230, 0.18);
+      overflow: hidden;
+    }
+
+    .mitre-metric-bar span {
+      display: block;
+      height: 100%;
+      width: var(--bar, 40%);
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-violet));
+      transition: width 0.45s ease;
     }
 
     .metric-card {
@@ -1086,9 +1342,17 @@
         grid-template-columns: 1fr;
       }
 
-      #particleCanvas,
+      #threeBgCanvas,
       .cursor-glow {
         display: none;
+      }
+
+      .mitre-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .soc-kpi-grid {
+        grid-template-columns: 1fr 1fr;
       }
     }
 
@@ -1098,17 +1362,38 @@
         transition-duration: 0.01ms !important;
       }
 
-      #particleCanvas,
+      #threeBgCanvas,
       .cursor-glow {
         display: none;
       }
+    }
+
+    @keyframes bubbleRise {
+      0% { transform: translateY(0) scale(0.8); opacity: 0; }
+      15% { opacity: 0.8; }
+      100% { transform: translateY(-120px) scale(1.08); opacity: 0; }
+    }
+
+    @keyframes livePulse {
+      0%, 100% { box-shadow: 0 0 12px rgba(113, 240, 255, 0.8); transform: scale(1); }
+      50% { box-shadow: 0 0 20px rgba(113, 240, 255, 1); transform: scale(1.12); }
+    }
+
+    @keyframes dashFlow {
+      to { stroke-dashoffset: -30; }
+    }
+
+    @keyframes scanlineDrift {
+      from { transform: translateY(0); }
+      to { transform: translateY(8px); }
     }
   </style>
 </head>
 <body>
   <div class="ambient-layer" aria-hidden="true">
-    <canvas id="particleCanvas"></canvas>
+    <canvas id="threeBgCanvas"></canvas>
     <div class="cyber-grid"></div>
+    <div class="scanline-overlay"></div>
     <div class="cursor-glow" id="cursorGlow"></div>
   </div>
   <div class="scroll-progress" aria-hidden="true"><span id="progressBar"></span></div>
@@ -1171,6 +1456,33 @@
           </article>
 
           <aside class="hero-right reveal">
+            <article class="soc-sim-card reveal" id="socSimCard">
+              <div class="soc-head">
+                <span>SOC Live Monitor</span>
+                <span style="display:inline-flex;align-items:center;gap:6px;"><span class="live-dot"></span>Live</span>
+              </div>
+              <div class="soc-kpi-grid">
+                <div class="soc-kpi">
+                  <span class="soc-kpi-label">Threat Events/sec</span>
+                  <span class="soc-kpi-value" data-kpi-target="18">0</span>
+                </div>
+                <div class="soc-kpi">
+                  <span class="soc-kpi-label">Detection Score</span>
+                  <span class="soc-kpi-value" data-kpi-target="97">0</span>
+                </div>
+                <div class="soc-kpi">
+                  <span class="soc-kpi-label">Active Alerts</span>
+                  <span class="soc-kpi-value" data-kpi-target="6">0</span>
+                </div>
+              </div>
+              <canvas class="soc-wave" id="socWave" width="540" height="116" aria-label="SOC waveform simulation"></canvas>
+              <div class="alert-bubbles" aria-hidden="true">
+                <span class="alert-bubble"></span>
+                <span class="alert-bubble"></span>
+                <span class="alert-bubble"></span>
+              </div>
+            </article>
+
             <article class="metric-card">
               <span class="metric-label">Scale</span>
               <p class="metric-value">500+ Endpoints Secured</p>
@@ -1231,6 +1543,74 @@
             <p>Hypothesis-led hunts across endpoint and network telemetry for early adversary signal detection.</p>
           </article>
         </div>
+
+        <article class="mitre-panel glass-card reveal" id="mitrePanel">
+          <div class="mitre-map">
+            <svg class="mitre-svg" viewBox="0 0 520 260" role="img" aria-label="MITRE ATT&CK tactic interaction map">
+              <line class="mitre-link" x1="86" y1="58" x2="180" y2="58"></line>
+              <line class="mitre-link" x1="180" y1="58" x2="275" y2="58"></line>
+              <line class="mitre-link" x1="275" y1="58" x2="370" y2="58"></line>
+              <line class="mitre-link" x1="370" y1="58" x2="462" y2="58"></line>
+              <line class="mitre-link" x1="86" y1="190" x2="180" y2="190"></line>
+              <line class="mitre-link" x1="180" y1="190" x2="275" y2="190"></line>
+              <line class="mitre-link" x1="275" y1="190" x2="370" y2="190"></line>
+              <line class="mitre-link" x1="370" y1="190" x2="462" y2="190"></line>
+              <line class="mitre-link" x1="86" y1="58" x2="86" y2="190"></line>
+              <line class="mitre-link" x1="180" y1="58" x2="180" y2="190"></line>
+              <line class="mitre-link" x1="275" y1="58" x2="275" y2="190"></line>
+              <line class="mitre-link" x1="370" y1="58" x2="370" y2="190"></line>
+              <line class="mitre-link" x1="462" y1="58" x2="462" y2="190"></line>
+
+              <g class="mitre-node active" data-tactic="Initial Access" data-cov="78" data-det="84" data-resp="69" transform="translate(86 58)">
+                <circle r="28"></circle><text y="3">Initial</text><text y="14">Access</text>
+              </g>
+              <g class="mitre-node" data-tactic="Execution" data-cov="81" data-det="88" data-resp="72" transform="translate(180 58)">
+                <circle r="28"></circle><text y="3">Execution</text>
+              </g>
+              <g class="mitre-node" data-tactic="Persistence" data-cov="74" data-det="79" data-resp="70" transform="translate(275 58)">
+                <circle r="28"></circle><text y="3">Persistence</text>
+              </g>
+              <g class="mitre-node" data-tactic="Privilege Escalation" data-cov="71" data-det="82" data-resp="68" transform="translate(370 58)">
+                <circle r="28"></circle><text y="0">Privilege</text><text y="12">Escalation</text>
+              </g>
+              <g class="mitre-node" data-tactic="Defense Evasion" data-cov="69" data-det="80" data-resp="65" transform="translate(462 58)">
+                <circle r="28"></circle><text y="0">Defense</text><text y="12">Evasion</text>
+              </g>
+
+              <g class="mitre-node" data-tactic="Credential Access" data-cov="77" data-det="85" data-resp="73" transform="translate(86 190)">
+                <circle r="28"></circle><text y="0">Credential</text><text y="12">Access</text>
+              </g>
+              <g class="mitre-node" data-tactic="Discovery" data-cov="82" data-det="87" data-resp="75" transform="translate(180 190)">
+                <circle r="28"></circle><text y="3">Discovery</text>
+              </g>
+              <g class="mitre-node" data-tactic="Lateral Movement" data-cov="73" data-det="79" data-resp="68" transform="translate(275 190)">
+                <circle r="28"></circle><text y="0">Lateral</text><text y="12">Movement</text>
+              </g>
+              <g class="mitre-node" data-tactic="Command and Control" data-cov="76" data-det="83" data-resp="71" transform="translate(370 190)">
+                <circle r="28"></circle><text y="0">Command &amp;</text><text y="12">Control</text>
+              </g>
+              <g class="mitre-node" data-tactic="Exfiltration" data-cov="70" data-det="78" data-resp="67" transform="translate(462 190)">
+                <circle r="28"></circle><text y="3">Exfiltration</text>
+              </g>
+            </svg>
+            <div class="mitre-tooltip" id="mitreTooltip"></div>
+          </div>
+          <aside class="mitre-detail" id="mitreDetail">
+            <h4 id="mitreTitle">Initial Access</h4>
+            <div class="mitre-metric">
+              <span class="mitre-metric-label">Coverage</span>
+              <div class="mitre-metric-bar"><span id="mitreCov" style="--bar: 78%;"></span></div>
+            </div>
+            <div class="mitre-metric">
+              <span class="mitre-metric-label">Detection Strength</span>
+              <div class="mitre-metric-bar"><span id="mitreDet" style="--bar: 84%;"></span></div>
+            </div>
+            <div class="mitre-metric">
+              <span class="mitre-metric-label">Response Readiness</span>
+              <div class="mitre-metric-bar"><span id="mitreResp" style="--bar: 69%;"></span></div>
+            </div>
+          </aside>
+        </article>
       </section>
 
       <section id="profile" class="reveal">
@@ -1651,6 +2031,8 @@
 
   <button id="backTop" class="back-top" type="button" aria-label="Back to top">^</button>
 
+  <script src="https://unpkg.com/three@0.162.0/build/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script>
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
@@ -1661,8 +2043,17 @@
     const backTop = document.getElementById("backTop");
     const heroGrid = document.querySelector(".hero-grid");
     const cursorGlow = document.getElementById("cursorGlow");
-    const particleCanvas = document.getElementById("particleCanvas");
+    const threeBgCanvas = document.getElementById("threeBgCanvas");
     const typedSubtitle = document.getElementById("typedSubtitle");
+    const socWave = document.getElementById("socWave");
+    const kpiValues = Array.from(document.querySelectorAll("[data-kpi-target]"));
+    const mitrePanel = document.getElementById("mitrePanel");
+    const mitreNodes = Array.from(document.querySelectorAll(".mitre-node"));
+    const mitreTooltip = document.getElementById("mitreTooltip");
+    const mitreTitle = document.getElementById("mitreTitle");
+    const mitreCov = document.getElementById("mitreCov");
+    const mitreDet = document.getElementById("mitreDet");
+    const mitreResp = document.getElementById("mitreResp");
 
     // Skill bars animate from zero once they enter view to add subtle progress motion.
     const skillBars = Array.from(document.querySelectorAll(".skill-bar span"));
@@ -1779,78 +2170,198 @@
       });
     }
 
-    // Lightweight particle network drawn in canvas for background depth.
-    if (particleCanvas && !isCoarsePointer && !prefersReducedMotion) {
-      const context = particleCanvas.getContext("2d");
-      const particles = [];
-      let rafId = null;
-      let width = 0;
-      let height = 0;
-      let dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-      function resizeCanvas() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        particleCanvas.width = Math.floor(width * dpr);
-        particleCanvas.height = Math.floor(height * dpr);
-        context.setTransform(dpr, 0, 0, dpr, 0, 0);
-        const count = Math.max(30, Math.min(72, Math.floor((width * height) / 32000)));
-        particles.length = 0;
-        for (let i = 0; i < count; i += 1) {
-          particles.push({
-            x: Math.random() * width,
-            y: Math.random() * height,
-            vx: (Math.random() - 0.5) * 0.35,
-            vy: (Math.random() - 0.5) * 0.35
-          });
-        }
+    function initThreeBackground() {
+      if (!threeBgCanvas || isCoarsePointer || prefersReducedMotion || typeof THREE === "undefined") {
+        if (threeBgCanvas) threeBgCanvas.style.display = "none";
+        return;
       }
 
-      function drawParticles() {
-        context.clearRect(0, 0, width, height);
-        for (let i = 0; i < particles.length; i += 1) {
-          const p = particles[i];
-          p.x += p.vx;
-          p.y += p.vy;
-          if (p.x < 0 || p.x > width) p.vx *= -1;
-          if (p.y < 0 || p.y > height) p.vy *= -1;
+      const renderer = new THREE.WebGLRenderer({ canvas: threeBgCanvas, antialias: true, alpha: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.8));
+      renderer.setSize(window.innerWidth, window.innerHeight);
 
-          context.beginPath();
-          context.arc(p.x, p.y, 1.2, 0, Math.PI * 2);
-          context.fillStyle = "rgba(113, 240, 255, 0.45)";
-          context.fill();
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(48, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.z = 120;
 
-          for (let j = i + 1; j < particles.length; j += 1) {
-            const q = particles[j];
-            const dx = p.x - q.x;
-            const dy = p.y - q.y;
-            const distance = Math.hypot(dx, dy);
-            if (distance < 130) {
-              const alpha = (1 - distance / 130) * 0.18;
-              context.beginPath();
-              context.moveTo(p.x, p.y);
-              context.lineTo(q.x, q.y);
-              context.strokeStyle = `rgba(141, 101, 255, ${alpha})`;
-              context.lineWidth = 1;
-              context.stroke();
-            }
+      const group = new THREE.Group();
+      scene.add(group);
+
+      const count = 180;
+      const positions = new Float32Array(count * 3);
+      for (let i = 0; i < count; i += 1) {
+        positions[i * 3] = (Math.random() - 0.5) * 220;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 140;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 120;
+      }
+
+      const pointsGeom = new THREE.BufferGeometry();
+      pointsGeom.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+      const pointsMat = new THREE.PointsMaterial({
+        color: 0x71f0ff,
+        size: 1.35,
+        transparent: true,
+        opacity: 0.78
+      });
+      const points = new THREE.Points(pointsGeom, pointsMat);
+      group.add(points);
+
+      const linePositions = [];
+      for (let i = 0; i < count; i += 1) {
+        for (let j = i + 1; j < count; j += 1) {
+          const ax = positions[i * 3];
+          const ay = positions[i * 3 + 1];
+          const az = positions[i * 3 + 2];
+          const bx = positions[j * 3];
+          const by = positions[j * 3 + 1];
+          const bz = positions[j * 3 + 2];
+          const dx = ax - bx;
+          const dy = ay - by;
+          const dz = az - bz;
+          const d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+          if (d < 28) {
+            linePositions.push(ax, ay, az, bx, by, bz);
           }
         }
-        rafId = window.requestAnimationFrame(drawParticles);
       }
 
-      resizeCanvas();
-      drawParticles();
+      const linesGeom = new THREE.BufferGeometry();
+      linesGeom.setAttribute("position", new THREE.Float32BufferAttribute(linePositions, 3));
+      const linesMat = new THREE.LineBasicMaterial({
+        color: 0x8d65ff,
+        transparent: true,
+        opacity: 0.22
+      });
+      const lines = new THREE.LineSegments(linesGeom, linesMat);
+      group.add(lines);
+
+      const pointer = { x: 0, y: 0 };
+      window.addEventListener("pointermove", (event) => {
+        pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+        pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      }, { passive: true });
+
+      let t = 0;
+      const tick = () => {
+        t += 0.0038;
+        group.rotation.y = t * 0.6 + pointer.x * 0.12;
+        group.rotation.x = Math.sin(t * 0.8) * 0.07 + pointer.y * 0.08;
+        group.position.y = Math.sin(t * 2.2) * 1.8;
+        camera.position.x += ((pointer.x * 8) - camera.position.x) * 0.03;
+        camera.position.y += ((pointer.y * 5) - camera.position.y) * 0.03;
+        renderer.render(scene, camera);
+        requestAnimationFrame(tick);
+      };
+      tick();
 
       window.addEventListener("resize", () => {
-        window.cancelAnimationFrame(rafId);
-        resizeCanvas();
-        drawParticles();
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
       });
-    } else if (particleCanvas) {
-      particleCanvas.style.display = "none";
     }
+
+    function initSocSimulation() {
+      if (kpiValues.length && typeof gsap !== "undefined") {
+        kpiValues.forEach((el, idx) => {
+          const target = Number(el.dataset.kpiTarget || 0);
+          const obj = { v: 0 };
+          gsap.to(obj, {
+            v: target,
+            duration: 1.2 + idx * 0.2,
+            ease: "power2.out",
+            onUpdate: () => {
+              el.textContent = `${Math.round(obj.v)}`;
+            }
+          });
+        });
+      }
+
+      if (socWave && !prefersReducedMotion) {
+        const ctx = socWave.getContext("2d");
+        const width = socWave.width;
+        const height = socWave.height;
+        let phase = 0;
+        const draw = () => {
+          phase += 0.045;
+          ctx.clearRect(0, 0, width, height);
+          ctx.strokeStyle = "rgba(113,240,255,0.9)";
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          for (let x = 0; x < width; x += 3) {
+            const y = height / 2 + Math.sin(x * 0.028 + phase) * 12 + Math.sin(x * 0.01 + phase * 0.6) * 7;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+
+          ctx.strokeStyle = "rgba(141,101,255,0.55)";
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          for (let x = 0; x < width; x += 4) {
+            const y = height / 2 + Math.cos(x * 0.022 + phase * 1.2) * 8;
+            if (x === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+
+          requestAnimationFrame(draw);
+        };
+        draw();
+      }
+    }
+
+    function initMitreInteractive() {
+      if (!mitrePanel || !mitreNodes.length) return;
+
+      const updateMitreDetail = (node) => {
+        mitreNodes.forEach((n) => n.classList.remove("active"));
+        node.classList.add("active");
+        mitreTitle.textContent = node.dataset.tactic;
+        mitreCov.style.setProperty("--bar", `${node.dataset.cov}%`);
+        mitreDet.style.setProperty("--bar", `${node.dataset.det}%`);
+        mitreResp.style.setProperty("--bar", `${node.dataset.resp}%`);
+      };
+
+      mitreNodes.forEach((node) => {
+        node.addEventListener("mouseenter", (event) => {
+          const tactic = node.dataset.tactic || "";
+          mitreTooltip.textContent = tactic;
+          const rect = mitrePanel.querySelector(".mitre-map").getBoundingClientRect();
+          mitreTooltip.style.left = `${event.clientX - rect.left}px`;
+          mitreTooltip.style.top = `${event.clientY - rect.top}px`;
+          mitreTooltip.classList.add("show");
+          if (typeof gsap !== "undefined") {
+            gsap.to(node, { scale: 1.08, duration: 0.35, ease: "power2.out" });
+          }
+        });
+
+        node.addEventListener("mousemove", (event) => {
+          const rect = mitrePanel.querySelector(".mitre-map").getBoundingClientRect();
+          mitreTooltip.style.left = `${event.clientX - rect.left}px`;
+          mitreTooltip.style.top = `${event.clientY - rect.top}px`;
+        });
+
+        node.addEventListener("mouseleave", () => {
+          mitreTooltip.classList.remove("show");
+          if (!node.classList.contains("active") && typeof gsap !== "undefined") {
+            gsap.to(node, { scale: 1, duration: 0.35, ease: "power2.out" });
+          }
+        });
+
+        node.addEventListener("click", () => updateMitreDetail(node));
+      });
+
+      if (typeof gsap !== "undefined" && !prefersReducedMotion) {
+        const links = mitrePanel.querySelectorAll(".mitre-link");
+        gsap.from(links, { opacity: 0, duration: 0.6, stagger: 0.03, ease: "power2.out" });
+        gsap.from(mitreNodes, { opacity: 0, scale: 0.7, duration: 0.5, stagger: 0.04, ease: "back.out(1.4)" });
+      }
+    }
+
+    initThreeBackground();
+    initSocSimulation();
+    initMitreInteractive();
 
     function setActiveNav() {
       let activeId = sections[0]?.id || "home";
