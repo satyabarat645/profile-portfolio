@@ -438,6 +438,21 @@
       transform: translateY(-2px);
     }
 
+    .btn .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(0);
+      animation: ripple 0.65s ease-out;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .btn span,
+    .btn {
+      z-index: 1;
+    }
+
     .btn-primary {
       color: #021118;
       background: linear-gradient(125deg, var(--accent-cyan), var(--accent-blue));
@@ -2408,17 +2423,3 @@
   </script>
 </body>
 </html>
-    .btn .ripple {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.4);
-      transform: scale(0);
-      animation: ripple 0.65s ease-out;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    .btn span,
-    .btn {
-      z-index: 1;
-    }
